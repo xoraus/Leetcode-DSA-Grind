@@ -17,7 +17,7 @@ class Solution {
             if(nums[idx] <= smallest){
                 secondSmallest = nums[idx];
                 smallest = nums[idx];
-            } else if(nums[idx] < secondLargest){
+            } else if(nums[idx] < secondSmallest){
                 secondSmallest = nums[idx];
             }
         }
