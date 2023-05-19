@@ -10,7 +10,7 @@ class Solution {
         return bigWork;
     }
     public double myPow(double x, int n) {
-        if(n < 0) return power(1 / x, -1l * n);
+        if(n < 0) return power(1 / x, -(long)n);
         return power(x,n);
     }
 }
