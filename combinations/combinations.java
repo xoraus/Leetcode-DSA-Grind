@@ -9,13 +9,11 @@ class Solution {
 
         if(n == 0) return;
 
-        // Yes choice
-        output.add(n);
-        combine(n - 1, k - 1, output);
-        output.remove(output.size() - 1); // backtracking
-
-        // no choice
-        combine(n -1, k, output);
+        for(int item = n; item >= 1; item--){
+            output.add(item);
+            combine(item - 1, k - 1, output);
+            output.remove(output.size() - 1); // backtracking;
+        }
     }
 
     public List<List<Integer>> combine(int n, int k) {
