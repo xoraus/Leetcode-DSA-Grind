@@ -1,21 +1,21 @@
 class Solution {
     public int maxArea(int[] height) {
-        int ptr1 = 0, ptr2 = height.length - 1;
+        int leftPtr = 0, rightPtr = height.length - 1;
         int maxWater = Integer.MIN_VALUE;   
 
-        while(ptr1 <= ptr2){
-            int buildHeight = Math.min(height[ptr1], height[ptr2]);
-            int distance = ptr2 - ptr1;
-            int containerCapacity = buildHeight * distance;
-            
+        while (leftPtr <= rightPtr) {
+            int minHeight = Math.min(height[leftPtr], height[rightPtr]);
+            int width = rightPtr - leftPtr;
+            int containerCapacity = minHeight * width;
+
             maxWater = Math.max(containerCapacity, maxWater);
-            
-            if(height[ptr1] <= height[ptr2]){
-                ptr1++;
+
+            if (height[leftPtr] <= height[rightPtr]) {
+                leftPtr++;
             } else {
-                ptr2--;
+                rightPtr--;
             }
         }
-        return maxWater;  
+        return maxWater;
     }
 }
