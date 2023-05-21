@@ -12,9 +12,31 @@ class Solution {
     }
     
     public String removeDuplicates(String s) {
-        StringBuilder output = new StringBuilder();
-        remove(s, 0, output);
-        return output.toString();
-        
+
+        // Recurisve Approach
+
+            // StringBuilder output = new StringBuilder();
+            // remove(s, 0, output);
+            // return output.toString();
+
+        // Iterative Approach
+
+        Stack<Character> st = new Stack<>();
+
+        for (int idx = 0; idx < s.length(); idx++) {
+            Character ch = s.charAt(idx);
+            if (st.isEmpty() || ch != st.peek()) {
+                st.push(ch);
+            } else {
+                st.pop();
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while (!st.isEmpty()) {
+            sb.insert(0, st.pop());
+        }
+
+        return sb.toString();        
     }
 }
