@@ -1,31 +1,25 @@
+// Approach 2: Push efficient: O(n) - Pop Heavy(1)
+
 class MyQueue {
     Stack<Integer> actual = new Stack<>();
     Stack<Integer> extra = new Stack<>();
     
     public void push(int x) {
+        while(actual.size() > 0){
+            extra.push(actual.pop());
+        }
         actual.push(x);
+        while(extra.size() > 0){
+            actual.push(extra.pop());
+        }
     }
     
     public int pop() {
-        while(actual.size() > 0){
-            extra.push(actual.pop());
-        }
-        int ans = extra.pop(); // pop
-        while(extra.size() > 0){
-            actual.push(extra.pop());
-        }
-        return ans;
+        return actual.pop();
     }
     
     public int peek() {
-        while(actual.size() > 0){
-            extra.push(actual.pop());
-        }
-        int ans = extra.peek(); // peek
-        while(extra.size() > 0){
-            actual.push(extra.pop());
-        }
-        return ans;
+        return actual.peek();
     }
     
     public boolean empty() {
