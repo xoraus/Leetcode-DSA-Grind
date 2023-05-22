@@ -1,30 +1,34 @@
-// Approach 1
+// Approach 2: Encryption Decryption
 
 class MinStack {
-    Stack<Integer> min, stk;
-
-    public MinStack() {
-        min = new Stack<>();
-        stk = new Stack<>();
-        min.push(Integer.MAX_VALUE);
-    }
+    Stack<Long> stk = new Stack<>();
+    long min = Integer.MAX_VALUE;
     
     public void push(int val) {
-        stk.push(val);
-        min.push(Math.min(val, min.peek()));
+        if(val >= min){
+            stk.push(1l * val);
+        } else {
+            stk.push(2l * val - min);
+            min = val;
+        }
     }
     
     public void pop() {
-        stk.pop();
-        min.pop();
+        long top = stk.pop();
+        if(top >= min) return;
+        min = 2l * min - top;
     }
     
     public int top() {
-        return stk.peek();    
+        long top = stk.peek();
+        if(top < min){
+            return (int)min;
+        }
+        return (int)top;
     }
     
     public int getMin() {
-        return min.peek();
+        return (int)min;
     }
 }
 
