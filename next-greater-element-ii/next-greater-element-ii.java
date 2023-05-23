@@ -5,16 +5,15 @@ class Solution {
         int[] nextGreaterElement = new int[n];
         Arrays.fill(nextGreaterElement, -1);
         
-        for(int idx = 0; idx < n; idx++){
-            while(stk.size() > 0 && nums[idx] > nums[stk.peek()]){
-                nextGreaterElement[stk.pop()] = nums[idx];
+        for (int idx = 0; idx < 2 * n; idx++) {
+            int circularIdx = idx % n;
+            
+            while (stk.size() > 0 && nums[circularIdx] > nums[stk.peek()]) {
+                nextGreaterElement[stk.pop()] = nums[circularIdx];
             }
-            stk.push(idx);
-        }
-
-        for(int idx = 0; idx < n; idx++){
-            while(stk.size() > 0 && nums[idx] > nums[stk.peek()]){
-                nextGreaterElement[stk.pop()] = nums[idx];
+            
+            if (idx < n) {
+                stk.push(circularIdx);
             }
         }
 
