@@ -29,21 +29,17 @@ class GFG
 
 
 //User function Template for Java
-class Solution
-{
+class Solution {
     char firstRep(String str) {
         int[] freq = new int[26];
+        char repeating = '#';
         
-        // Fill the Frequency Array
-        for(char ch: str.toCharArray()){
-            freq[ch - 'a']++;
+        for(int idx = str.length() - 1; idx >= 0; idx--){
+        	char ch = str.charAt(idx);
+        	freq[ch - 'a']++;
+        	if(freq[ch - 'a'] > 1) repeating = ch;
         }
         
-        // Find the First Unique Non Repeating or Distinct Character
-        for(char ch: str.toCharArray()){
-            if(freq[ch - 'a'] > 1) return ch;
-        }
-        
-        return '#';
+        return repeating;
     }
 }
