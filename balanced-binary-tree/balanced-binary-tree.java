@@ -14,23 +14,18 @@
  * }
  */
 class Solution {
-    public static class Pair{
-        int height = 0;
-        boolean balanced = true;
-    }
-    public Pair dfs(TreeNode root){
-        if(root == null) return new Pair();
+    public int dfs(TreeNode root, boolean[] balanced){
+        if(root == null) return 0;
 
-        Pair left = dfs(root.left);
-        Pair right = dfs(root.right);
+        int lh = dfs(root.left, balanced);
+        int rh = dfs(root.right, balanced);
 
-        Pair curr = new Pair();
-        curr.height = Math.max(left.height, right.height) + 1;
-        curr.balanced = left.balanced && right.balanced;
-        if(Math.abs(left.height - right.height) > 1) curr.balanced = false;
-        return curr;
+        if(Math.abs(lh - rh) > 1) balanced[0] = false;
+        return Math.max(lh, rh) + 1;
     }
     public boolean isBalanced(TreeNode root) {
-        return dfs(root).balanced;
+        boolean[] balanced = {true};
+        dfs(root, balanced);
+        return balanced[0];
     }
 }
