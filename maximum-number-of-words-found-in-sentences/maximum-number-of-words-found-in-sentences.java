@@ -4,8 +4,8 @@ class Solution {
         for(int idx = 0; idx < sentences.length; idx++){
             String str = sentences[idx];
             int count = 0;
-            for(int words = 0; words < str.length(); words++){
-                if(str.charAt(words) == ' '){
+            for(int spaces = 0; spaces < str.length(); spaces++){
+                if(str.charAt(spaces) == ' '){
                     count++;
                 }
             }
