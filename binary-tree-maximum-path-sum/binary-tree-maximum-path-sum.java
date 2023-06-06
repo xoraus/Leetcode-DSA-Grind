@@ -13,21 +13,33 @@
  *     }
  * }
  */
-class Solution {
-    long maxPathSum = Long.MIN_VALUE;
+ class Solution {
+    public static class Pair {
+        int height = 0;
+        int maxPathSum = Integer.MIN_VALUE;
+    }
 
-    public long calcMaxPathSum(TreeNode root) {
-        if (root == null) return 0;
+    public Pair calcMaxPathSum(TreeNode root) {
+        if (root == null)
+            return new Pair();
 
-        long leftSum = Math.max(calcMaxPathSum(root.left), 0);
-        long rightSum = Math.max(calcMaxPathSum(root.right), 0);
+        Pair leftPair = calcMaxPathSum(root.left);
+        Pair rightPair = calcMaxPathSum(root.right);
 
-        maxPathSum = Math.max(maxPathSum, leftSum + rightSum + root.val);
-        return Math.max(leftSum, rightSum) + root.val; 
+        leftPair.height = Math.max(0, leftPair.height);
+        rightPair.height = Math.max(0, rightPair.height);
+
+        Pair currPair = new Pair();
+        currPair.maxPathSum = Math.max(leftPair.maxPathSum, rightPair.maxPathSum);
+        currPair.maxPathSum = Math.max(currPair.maxPathSum,
+                leftPair.height + rightPair.height + root.val);
+
+        currPair.height = Math.max(leftPair.height, rightPair.height) + root.val;
+        return currPair;
     }
 
     public int maxPathSum(TreeNode root) {
-        calcMaxPathSum(root);
-        return (int) maxPathSum;
+        Pair resultPair = calcMaxPathSum(root);
+        return resultPair.maxPathSum;
     }
 }
