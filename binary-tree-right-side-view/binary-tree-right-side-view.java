@@ -18,16 +18,16 @@ class Solution {
         List<Integer> rightView = new ArrayList<>();
         if(root == null) return rightView;
           
-        Deque<TreeNode> q = new ArrayDeque<>();
+        Queue<TreeNode> q = new ArrayDeque<>();
         q.add(root);
           
         while(q.size() > 0){
-            rightView.add(q.getLast().val);
             for(int c = q.size(); c > 0; c--){
                 root = q.remove();
                 if(root.left != null) q.add(root.left);
                 if(root.right != null) q.add(root.right);
             }
+            rightView.add(root.val);
         }
 
         return rightView;
