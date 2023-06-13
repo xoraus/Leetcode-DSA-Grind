@@ -1,37 +1,35 @@
 class Solution {
-    public static class Pair {
-        TreeNode head;
-        TreeNode tail;
-
-        Pair(TreeNode head, TreeNode tail) {
+    static class Pair{
+        TreeNode head, tail;
+        Pair(TreeNode head, TreeNode tail){
             this.head = head;
             this.tail = tail;
         }
     }
-
-    public Pair linearize(TreeNode root) {
-        if (root == null) {
+    public Pair linear(TreeNode root){
+        if(root == null){
             return new Pair(null, null);
         }
 
-        if (root.left == null && root.right == null) {
+        if(root.left == null && root.right == null){
             return new Pair(root, root);
         }
 
-        if (root.left == null) {
-            Pair rightList = linearize(root.right);
+        if(root.left == null){
+            Pair rightList = linear(root.right);
             return new Pair(root, rightList.tail);
         }
 
-        if (root.right == null) {
-            Pair leftList = linearize(root.left);
+        if(root.right == null){
+            Pair leftList = linear(root.left);
+            root.left = null;
             root.right = leftList.head;
-            root.left = null; // Updated line
-            return new Pair(root, leftList.tail);
+            return new Pair(root, leftList.tail); 
         }
 
-        Pair leftList = linearize(root.left);
-        Pair rightList = linearize(root.right);
+
+        Pair leftList = linear(root.left);
+        Pair rightList = linear(root.right);
 
         root.left = null;
         root.right = leftList.head;
@@ -41,6 +39,6 @@ class Solution {
     }
 
     public void flatten(TreeNode root) {
-        linearize(root);
+        linear(root);
     }
 }
