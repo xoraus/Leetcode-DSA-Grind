@@ -22,7 +22,7 @@ class Sorted_Array {
 
 class GfG {
     int transitionPoint(int arr[], int n) {
-        if(n == 0 || arr[n - 1] == 0){
+        if(arr[n - 1] == 0){
             return -1;
         }
         
