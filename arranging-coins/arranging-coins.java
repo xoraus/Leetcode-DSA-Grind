@@ -1,22 +1,20 @@
 class Solution {
     public int arrangeCoins(int n) {
-        long left = 0, right = n;
+        long left = 1, right = n;
+        int res = 0;
 
         while(left <= right){
             long mid = left + (right - left) / 2;
-            long curr = mid * (mid + 1) / 2;
+            long coinsUsed = mid * (mid + 1) / 2;
 
-            if(curr == n){
-                return (int)mid;
-            }
-
-            if(n < curr){
+            if(coinsUsed > n){
                 right = mid - 1;
             } else {
                 left = mid + 1;
+                res = (int)Math.max(res, mid);
             }
         }
 
-        return (int)right;
+        return res;
     }
 }
