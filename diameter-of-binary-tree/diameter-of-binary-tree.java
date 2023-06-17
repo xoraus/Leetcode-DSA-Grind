@@ -15,7 +15,7 @@
  */
 class Solution {
     static class Pair {
-        int height = 0;
+        int height = -1;
         int diameter = 0;
     }
 
@@ -29,11 +29,11 @@ class Solution {
         Pair ans = new Pair();
         ans.height = Math.max(l.height, r.height) + 1;
         ans.diameter = Math.max(l.diameter, r.diameter);
-        ans.diameter = Math.max(ans.diameter,l.height + r.height + 1);
+        ans.diameter = Math.max(ans.diameter,l.height + r.height + 2);
         return ans;
     }
     public int diameterOfBinaryTree(TreeNode root) {
         Pair ans = dfs(root);
-        return ans.diameter - 1;
+        return ans.diameter;
     }
 }
