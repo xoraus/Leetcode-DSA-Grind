@@ -1,13 +1,14 @@
 class Solution {
-    public boolean isPossible(int[] piles, long speed, long totalHours) {
+    public boolean isPossible(int[] piles, long speed, long totalHours){
         long hoursRequired = 0;
 
-        for (int bananas : piles) {
-            hoursRequired += bananas / speed; // floor division
-            if (bananas % speed != 0)
-                hoursRequired++; // ceil division
+        for(int bananas: piles){
+            hoursRequired += bananas / speed;
+            
+            if(bananas % speed != 0){
+                hoursRequired++;
+            }
         }
-
         return (hoursRequired <= totalHours);
     }
 
@@ -22,14 +23,14 @@ class Solution {
         long left = 1l;
         long right = maxInArray(piles);
 
-        while (left <= right) {
+        while(left <= right){
             long mid = left + (right - left) / 2l;
-            if (isPossible(piles, mid, totalHours) == true)
+            if(isPossible(piles, mid, totalHours) == true){
                 right = mid - 1;
-            else
-                left = mid + 1;
+            } else {
+                left = mid + 1; 
+            }
         }
-
-        return (int) left;
+        return (int)left;
     }
 }
