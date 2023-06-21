@@ -10,10 +10,10 @@ class Solution {
         int mid = left + (right - left) / 2;
         if (nums[mid - 1] > nums[mid])
             return mid;
-        if (nums[mid] <= nums[right])
-            right = mid - 1; // unrotated part: min in left side
-        else
+        if (nums[mid] >= nums[right])
             left = mid + 1; // rotated part: min in right side
+        else
+            right = mid - 1; // unrotated part: min in left side
     }
 
     return -1;
