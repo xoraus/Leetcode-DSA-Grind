@@ -23,9 +23,9 @@ class Solution {
 
         while(idx + 1 < arr.length){
             if(arr[idx] == arr[idx + 1]){
-                break;
+                return false;
             } else if(arr[idx] < arr[idx + 1]) {
-                break;
+                return false;
             }
             idx++;
         }
