@@ -1,54 +1,45 @@
 class Solution {
-    public String addStrings(String num1, String num2) {
-        StringBuilder res = new StringBuilder();
-        int p1 = num1.length() - 1, p2 = num2.length() - 1;
-        int carry = 0;
-
-        while (p1 >= 0 || p2 >= 0 || carry > 0) {
-            int d1 = (p1 >= 0) ? num1.charAt(p1) - '0' : 0;
-            int d2 = (p2 >= 0) ? num2.charAt(p2) - '0' : 0;
-            int sum = d1 + d2 + carry;
-
-            carry = sum / 10;
-            res.append(sum % 10);
-            p1--;
-            p2--;
-        }
-        return res.reverse().toString();
-    }
-
-    public String multiply(String num1, int d2) {
-        StringBuilder res = new StringBuilder();
-        int p1 = num1.length() - 1;
-        int carry = 0;
-
-        while (p1 >= 0 || carry > 0) {
-            int d1 = (p1 >= 0) ? num1.charAt(p1) - '0' : 0;
-            int prod = d1 * d2 + carry;
-
-            res.append(prod % 10);
-            carry = prod / 10;
-            p1--;
-        }
-
-        return res.reverse().toString();
-    }
-
-    public String multiply(String num1, String num2) {
-        String res = "0";
-        int count = 0;
-
-        for (int idx = num2.length() - 1; idx >= 0; idx--) {
-            int d2 = num2.charAt(idx) - '0';
-            String temp = multiply(num1, d2);
-            for (int c = 0; c < count; c++) {
-                temp += '0';
-            }
-            res = addStrings(res, temp);
-            count++;
-        }
-        if (res.charAt(0) == '0')
+    String multiply(String num1, String num2) {
+        if (num1.equals("0") || num2.equals("0")) {
             return "0";
-        return res;
-    } 
+        }
+        
+        int length1 = num1.length();
+        int length2 = num2.length();
+        int[] result = new int[length1 + length2];
+        int index2 = length2 - 1;
+        int positionFactor = 0;
+        
+        while (index2 >= 0) {
+            int index1 = length1 - 1;
+            int carry = 0;
+            int product = 1;
+            int currentIndex = result.length - 1 - positionFactor;
+            
+            while (index1 >= 0) {
+                product = ((num2.charAt(index2) - '0') * (num1.charAt(index1) - '0') + carry + result[currentIndex]) % 10;
+                carry = ((num2.charAt(index2) - '0') * (num1.charAt(index1) - '0') + carry + result[currentIndex]) / 10;
+                result[currentIndex--] = product;
+                index1--;
+            }
+            
+            result[currentIndex--] = carry;
+            positionFactor++;
+            index2--;
+        }
+        
+        StringBuilder answer = new StringBuilder();
+        int startIndex = 0;
+        
+        while (startIndex < result.length && result[startIndex] == 0) {
+            startIndex++;
+        }
+        
+        for (; startIndex < result.length; startIndex++) {
+            answer.append(result[startIndex]);
+        }
+        
+        return answer.toString();
+    }
+
 }
