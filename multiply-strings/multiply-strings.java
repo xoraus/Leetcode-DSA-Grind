@@ -13,12 +13,14 @@ class Solution {
         while (index2 >= 0) {
             int index1 = length1 - 1;
             int carry = 0;
-            int product = 1;
+            int product = 0;
             int currentIndex = result.length - 1 - positionFactor;
             
             while (index1 >= 0) {
-                product = ((num2.charAt(index2) - '0') * (num1.charAt(index1) - '0') + carry + result[currentIndex]) % 10;
-                carry = ((num2.charAt(index2) - '0') * (num1.charAt(index1) - '0') + carry + result[currentIndex]) / 10;
+                int digit1 = num1.charAt(index1) - '0';
+                int digit2 = num2.charAt(index2) - '0';
+                product = (digit2 * digit1 + carry + result[currentIndex]) % 10;
+                carry = (digit2 * digit1 + carry + result[currentIndex]) / 10;
                 result[currentIndex--] = product;
                 index1--;
             }
@@ -41,5 +43,4 @@ class Solution {
         
         return answer.toString();
     }
-
 }
