@@ -9,24 +9,23 @@
  * }
  */
 class Solution {
-    public ListNode deleteDuplicates(ListNode curr) {
+    public ListNode deleteDuplicates(ListNode head) {
         ListNode dummy = new ListNode(Integer.MIN_VALUE);
         ListNode tail = dummy;
 
-        while(curr != null){
-            if(curr.next != null && curr.val == curr.next.val){
-                int temp = curr.val;
-                while(curr != null && curr.val == temp){
-                    curr = curr.next;
+        while(head != null){
+            if(head.next != null && head.val == head.next.val){
+                int temp = head.val;
+                while(head != null && head.val == temp){
+                    head = head.next;
                 }
-            } 
-            else {
-                tail.next = curr;
-                tail = curr;
-                curr = curr.next;
+            } else {
+                tail.next = head;
+                tail = head;
+                head = head.next;    
             }
         }
-
+        
         tail.next = null;
         return dummy.next;
     }
