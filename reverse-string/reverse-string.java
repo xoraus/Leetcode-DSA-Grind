@@ -1,14 +1,17 @@
 class Solution {
-    public void reverse(char[] s, int left, int right){
-        if(left >= right) return;
-        reverse(s, left + 1, right - 1);
-        // swap left & right
-        char temp = s[left];
-        s[left] = s[right];
-        s[right] = temp;
+    public void swap(char[] ch, int left, int right){
+        char tempChar = ch[left];
+        ch[left] = ch[right];
+        ch[right] = tempChar;
     }
 
-    public void reverseString(char[] s) {
-        reverse(s, 0, s.length - 1);    
+    public void reverse(char[] str, int left, int right){
+        if(left >= right) return;
+        reverse(str, left + 1, right - 1);
+        swap(str, left, right);
+    }
+
+    public void reverseString(char[] str) {
+        reverse(str, 0, str.length - 1);    
     }
 }
