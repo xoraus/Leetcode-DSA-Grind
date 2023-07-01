@@ -1,31 +1,23 @@
 class Solution {
-    int ans;
-    int[] count;
-
     public int distributeCookies(int[] cookies, int k) {
-        ans = Integer.MAX_VALUE;
-        count = new int[k];
-        backtrack(0, cookies, k);
-        return ans;
+        int[] counts = new int[k];
+        return dfs(cookies, counts, 0);
     }
 
-    public void backtrack(int cookieNumber, int[] cookies, int k) {
-        if (cookieNumber == cookies.length) {
-            int max = 0;
-            for (int i = 0; i < k; i++) {
-                max = Math.max(max, count[i]);
+    public int dfs(int[] cookies, int[] counts, int idx) {
+        if(idx == cookies.length) {
+            int max = counts[0];
+            for(int count : counts) {
+                max = Math.max(max, count);
             }
-            ans = Math.min(ans, max);
-            return;
+            return max;
         }
-
-        for (int i = 0; i < k; i++) {
-            count[i] += cookies[cookieNumber];
-            backtrack(cookieNumber + 1, cookies, k);
-            count[i] -= cookies[cookieNumber];
-            if (count[i] == 0) {
-                break;
-            }
+        int res = Integer.MAX_VALUE;
+        for(int i=0; i<counts.length; i++) {
+            counts[i] += cookies[idx];
+            res = Math.min(res, dfs(cookies, counts, idx+1));
+            counts[i] -= cookies[idx];
         }
+        return res;
     }
 }
