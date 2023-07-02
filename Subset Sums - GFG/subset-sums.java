@@ -33,22 +33,22 @@ class GFG
 
 //User function Template for Java//User function Template for Java
 class Solution {
-    void calculateSubsetSums(int currIdx, int currSum, ArrayList<Integer> nums, int totalElements, ArrayList<Integer> subsetSums) {
-        if (currIdx == totalElements) {
+    void calculateSubsetSums(ArrayList<Integer> nums, int currIdx, int currSum, ArrayList<Integer> subsetSums) {
+        if (currIdx == nums.size()) {
             subsetSums.add(currSum);
             return;
         }
         
         // Include the current element
-        calculateSubsetSums(currIdx + 1, currSum + nums.get(currIdx), nums, totalElements, subsetSums);
+        calculateSubsetSums(nums, currIdx + 1, currSum + nums.get(currIdx), subsetSums);
         
         // Exclude the current element
-        calculateSubsetSums(currIdx + 1, currSum, nums, totalElements, subsetSums);
+        calculateSubsetSums(nums, currIdx + 1, currSum, subsetSums);
     }
 
-    ArrayList<Integer> subsetSums(ArrayList<Integer> nums, int totalElements) {
+    ArrayList<Integer> subsetSums(ArrayList<Integer> nums, int size) {
         ArrayList<Integer> subsetSums = new ArrayList<>();
-        calculateSubsetSums(0, 0, nums, totalElements, subsetSums);
+        calculateSubsetSums(nums, 0, 0, subsetSums);
         Collections.sort(subsetSums);
         return subsetSums;
     }
