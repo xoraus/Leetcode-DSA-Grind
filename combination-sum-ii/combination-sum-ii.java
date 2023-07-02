@@ -1,9 +1,8 @@
 class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         List<List<Integer>> result = new ArrayList<>();
-        List<Integer> combination = new ArrayList<>();
         Arrays.sort(candidates); // Sort the candidates to handle duplicates
-        findCombinations(candidates, 0, target, result, combination);
+        findCombinations(candidates, 0, target, result, new ArrayList<>());
         return result;
     }
     
