@@ -1,24 +1,21 @@
 class Solution {
-    public int memoization(int[] nums, int currIdx, int prevChoice, int[][] dp) {
-        if (currIdx == nums.length)
+    public int maxSum(int[] nums, int currIdx, int[] dp) {
+        if (currIdx >= nums.length)
             return 0;
-        if (dp[currIdx][prevChoice] != -1)
-            return dp[currIdx][prevChoice];
+        if (dp[currIdx] != -1)
+            return dp[currIdx];
 
-        int robCurrent = (prevChoice == 0) ? (memoization(nums, currIdx + 1, 1, dp) + nums[currIdx]) : 0;
-        int skipCurrent = memoization(nums, currIdx + 1, 0, dp);
-
-        return dp[currIdx][prevChoice] = Math.max(robCurrent, skipCurrent);
+        dp[currIdx] = Math.max(nums[currIdx] + maxSum(nums, currIdx + 2, dp), maxSum(nums, currIdx + 1, dp));
+        return dp[currIdx];
     }
 
     public int rob(int[] nums) {
         int n = nums.length;
-        int[][] dp = new int[n + 1][2];
-        for (int i = 0; i < n; i++) {
-            dp[i][0] = -1;
-            dp[i][1] = -1;
-        }
+        if (n == 0)
+            return 0;
 
-        return memoization(nums, 0, 0, dp);
+        int[] dp = new int[n];
+        Arrays.fill(dp, -1);
+        return maxSum(nums, 0, dp);
     }
 }
