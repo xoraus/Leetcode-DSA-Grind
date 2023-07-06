@@ -1,32 +1,33 @@
 class Solution {
-    public int memoization(int[] nums, int startIndex, int endIndex, int[][] dp) {
-        if (startIndex == endIndex - 1) return nums[startIndex];
-        if (startIndex >= endIndex) return 0;
-        
-        if (dp[startIndex][endIndex] != -1)
-            return dp[startIndex][endIndex];
-
-        int robCurrent = nums[startIndex] + memoization(nums, startIndex + 2, endIndex, dp);
-        int skipCurrent = memoization(nums, startIndex + 1, endIndex, dp);
-
-        return dp[startIndex][endIndex] = Math.max(robCurrent, skipCurrent);
-    }
-
     public int rob(int[] nums) {
         int n = nums.length;
+        
         if (n == 0) return 0;
         if (n == 1) return nums[0];
 
-        int[][] dp = new int[n][n + 1];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j <= n; j++) {
-                dp[i][j] = -1;
-            }
-        }
+        int skipFirstHouse = helper(nums, 0, n - 2);
+        int skipLastHouse = helper(nums, 1, n - 1);
 
-        int maxAmount1 = memoization(nums, 0, n - 1, dp);
-        int maxAmount2 = memoization(nums, 1, n, dp);
+        return Math.max(skipFirstHouse, skipLastHouse);
 
-        return Math.max(maxAmount1, maxAmount2);
+    }
+
+    public int helper(int[] nums, int startIdx, int endIdx) {
+        int[] dp = new int[nums.length + 1];
+        Arrays.fill(dp, -1);
+        
+        return maxSum(nums, startIdx, endIdx, dp);
+    }
+
+    public int maxSum(int[] nums, int currIdx, int endIdx, int[] dp) {
+        if (currIdx > endIdx) return 0;
+        
+        if (dp[currIdx] != -1)
+            return dp[currIdx];
+
+        int robCurrent = nums[currIdx] + maxSum(nums, currIdx + 2, endIdx, dp);
+        int skipCurrent = maxSum(nums, currIdx + 1, endIdx, dp);
+        
+        return dp[currIdx] = Math.max(robCurrent, skipCurrent);
     }
 }
