@@ -48,29 +48,16 @@ class gfg
 
 class Solution 
 { 
-    static int helper(int capacity, int item, int[] weight, int[] cost, int[][] dp) {
-        if (item == cost.length) {
-            return 0;
-        }
-        if (dp[capacity][item] != -1) {
-            return dp[capacity][item];
-        }
-
-        int pickItem = (capacity >= weight[item]) ? helper(capacity - weight[item], item + 1, weight, cost, dp) + cost[item] : -1;
-        int skipItem = helper(capacity, item + 1, weight, cost, dp);
-
-        return dp[capacity][item] = Math.max(pickItem, skipItem);
-    }
-
     static int knapSack(int capacity, int[] weight, int[] cost, int n) {
-        int[][] dp = new int[capacity + 1][n + 1];
-
-        for (int i = 0; i <= capacity; i++) {
-            for (int j = 0; j <= n; j++) {
-                dp[i][j] = -1;
+        int[][] dp = new int[capacity + 1][cost.length + 1];
+        for (int item = 1; item <= cost.length; item++) {
+            for (int cap = 1; cap <= capacity; cap++) {
+                int no = dp[cap][item - 1];
+                int yes = (cap >= weight[item - 1]) ? cost[item - 1] + dp[cap - weight[item - 1]][item - 1] : -1;
+                dp[cap][item] = Math.max(yes, no);
             }
         }
-        return helper(capacity, 0, weight, cost, dp); 
+        return dp[capacity][cost.length];
     }
 }
 
