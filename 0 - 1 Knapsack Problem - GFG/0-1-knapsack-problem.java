@@ -48,7 +48,7 @@ class gfg
 
 class Solution 
 { 
-    static int memo(int[] weight, int[] cost, int capacity, int item, int[][] dp) {
+    static int helper(int capacity, int item, int[] weight, int[] cost, int[][] dp) {
         if (item == cost.length) {
             return 0;
         }
@@ -56,10 +56,10 @@ class Solution
             return dp[capacity][item];
         }
 
-        int yes = (capacity >= weight[item]) ? memo(weight, cost, capacity - weight[item], item + 1, dp) + cost[item] : -1;
-        int no = memo(weight, cost, capacity, item + 1, dp);
+        int pickItem = (capacity >= weight[item]) ? helper(capacity - weight[item], item + 1, weight, cost, dp) + cost[item] : -1;
+        int skipItem = helper(capacity, item + 1, weight, cost, dp);
 
-        return dp[capacity][item] = Math.max(yes, no);
+        return dp[capacity][item] = Math.max(pickItem, skipItem);
     }
 
     static int knapSack(int capacity, int[] weight, int[] cost, int n) {
@@ -70,7 +70,7 @@ class Solution
                 dp[i][j] = -1;
             }
         }
-        return memo(weight, cost, capacity, 0, dp); 
+        return helper(capacity, 0, weight, cost, dp); 
     }
 }
 
