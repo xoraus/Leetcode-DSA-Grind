@@ -32,9 +32,10 @@ import java.io.*;
 class Solution {
     boolean isSorted(int[] arr, int idx){
         if(idx >= arr.length - 1) return true;
-        boolean smallWork = isSorted(arr, idx + 1);
         
-        return smallWork && (arr[idx] <= arr[idx + 1]);
+        if(arr[idx] > arr[idx + 1]) return false;
+        
+        return isSorted(arr, idx + 1);
     }
     
     boolean arraySortedOrNot(int[] arr, int n) {
