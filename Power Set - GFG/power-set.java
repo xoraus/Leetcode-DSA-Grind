@@ -30,25 +30,27 @@ class GFG
 
 class Solution
 {
-    public List<String> subsets(String input, int idx, String output, List<String> subsets){
-        if(idx == input.length()){
-            if(output.length() > 0) subsets.add(output);
-            return subsets;
-        }
-        
-        // yes choice
-        subsets(input, idx + 1, output + input.charAt(idx), subsets);
-        
-        // no choice
-        subsets(input, idx + 1, output, subsets);
-        
-        return subsets;
+    public List<String> AllPossibleStrings(String str) {
+        List<String> powerset = new ArrayList<>();
+        powersetPost(str, 0, powerset);
+        Collections.sort(powerset);
+        powerset.remove("");
+        return powerset;
     }
     
-    public List<String> AllPossibleStrings(String input){
-        List<String> subsets = new ArrayList<>();
-        subsets(input, 0, "", subsets);
-        Collections.sort(subsets);
-        return subsets;
+    public void powersetPost(String str, int idx, List<String> powerset) {
+        if (idx == str.length()) {
+            powerset.add("");
+            return;
+        }
+    
+        powersetPost(str, idx + 1, powerset);
+    
+        int n = powerset.size();
+        for (int i = 0; i < n; i++) {
+            String newSubset = str.charAt(idx) + powerset.get(i);
+            powerset.add(newSubset);
+        }
     }
+
 }
