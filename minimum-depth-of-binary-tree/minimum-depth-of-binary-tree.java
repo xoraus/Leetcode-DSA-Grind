@@ -15,18 +15,20 @@
  */
 class Solution {
     public int minDepth(TreeNode root) {
-        if(root == null) return 0;
-
-        if(root.right == null){
-            return minDepth(root.left) + 1;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int depth = 1, size = 0;
+        while(!queue.isEmpty()){
+            size = queue.size();
+            for(int idx = 0; idx < size; idx++){
+                TreeNode removed = queue.remove();
+                if(removed == null) continue;
+                if(removed.left == null && removed.right == null) return depth;
+                queue.add(removed.left);
+                queue.add(removed.right);
+            }
+            depth++;
         }
-        if(root.left == null){
-            return minDepth(root.right) + 1;
-        }
-
-        int minLeftHeight = minDepth(root.left);
-        int minRightHeight = minDepth(root.right);
-        
-        return 1 + Math.min(minLeftHeight, minRightHeight);
+        return 0;
     }
 }
