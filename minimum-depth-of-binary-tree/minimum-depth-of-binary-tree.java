@@ -26,6 +26,7 @@ class Solution {
 
         int minLeftHeight = minDepth(root.left);
         int minRightHeight = minDepth(root.right);
+        
         return 1 + Math.min(minLeftHeight, minRightHeight);
     }
 }
