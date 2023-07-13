@@ -1,21 +1,27 @@
 class Solution {
-    public void findSubsets(int[] nums, int idx, List<Integer> subset, List<List<Integer>> ansList) {
-        ansList.add(new ArrayList<>(subset));
-        
-        for (int i = idx; i < nums.length; i++) {
-            if (i != idx && nums[i] == nums[i - 1]) {
-                continue;
-            }
-            subset.add(nums[i]);
-            findSubsets(nums, i + 1, subset, ansList);
-            subset.remove(subset.size() - 1);
+    public List<List<Integer>> uniquePowerset(int[] nums, int idx, List<Integer> subset, List<List<Integer>> powerset) {
+        if (idx == nums.length) {
+            powerset.add(new ArrayList<>(subset));
+            return powerset;
         }
+
+        subset.add(nums[idx]);
+        uniquePowerset(nums, idx + 1, subset, powerset);
+        subset.remove(subset.size() - 1);
+
+        
+        if(subset.size() > 0 && subset.get(subset.size() - 1) == nums[idx]){
+            return powerset;
+        }
+        uniquePowerset(nums, idx + 1, subset, powerset);
+
+        return powerset;
     }
 
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         Arrays.sort(nums);
-        List<List<Integer>> ansList = new ArrayList<>();
-        findSubsets(nums, 0, new ArrayList<>(), ansList);
-        return ansList;
+        List<List<Integer>> powerset = new ArrayList<>();
+        uniquePowerset(nums, 0, new ArrayList<>(), powerset);
+        return powerset;
     }
 }
