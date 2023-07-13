@@ -9,8 +9,8 @@ class Solution {
         uniquePowerset(nums, idx + 1, subset, powerset);
         subset.remove(subset.size() - 1);
 
-        
-        if(subset.size() > 0 && subset.get(subset.size() - 1) == nums[idx]){
+        int subsetSize = subset.size();
+        if(subsetSize > 0 && subset.get(subsetSize - 1) == nums[idx]){
             return powerset;
         }
         uniquePowerset(nums, idx + 1, subset, powerset);
