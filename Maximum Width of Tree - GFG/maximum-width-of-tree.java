@@ -131,11 +131,8 @@ class Solution {
         while (!queue.isEmpty()) {
             int levelSize = queue.size();
 
-            // Check if the current level has more nodes than the previous maximum width
-            if (levelSize > maxWidth)
-                maxWidth = levelSize;
-
-            // Process all nodes at the current level
+            maxWidth = Math.max(maxWidth, levelSize);
+            
             while (levelSize > 0) {
                 Node current = queue.poll();
 
