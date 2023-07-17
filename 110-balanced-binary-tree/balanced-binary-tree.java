@@ -15,8 +15,13 @@
  */
 
 class Pair {
-    int height = 0;
-    boolean isBalanced = true;
+    int height;
+    boolean isBalanced;
+
+    public Pair(int height, boolean isBalanced) {
+        this.height = height;
+        this.isBalanced = isBalanced;
+    }
 }
 
 class Solution {
@@ -25,16 +30,17 @@ class Solution {
         return res.isBalanced;
     }
 
-    public Pair dfs(TreeNode root){
-        if(root == null) return new Pair();
+    public Pair dfs(TreeNode root) {
+        if (root == null) {
+            return new Pair(0, true);
+        }
 
-        Pair leftTree = dfs(root.left);
-        Pair rightTree = dfs(root.right);
+        Pair left = dfs(root.left);
+        Pair right = dfs(root.right);
 
-        Pair ans = new Pair();
-        ans.height = Math.max(leftTree.height, rightTree.height) + 1;
-        ans.isBalanced = leftTree.isBalanced && rightTree.isBalanced && Math.abs(leftTree.height - rightTree.height) <= 1;
+        int height = Math.max(left.height, right.height) + 1;
+        boolean isBalanced = left.isBalanced && right.isBalanced && Math.abs(left.height - right.height) <= 1;
 
-        return ans;
+        return new Pair(height, isBalanced);
     }
 }
