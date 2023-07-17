@@ -125,7 +125,7 @@ class Solution {
         if (root == null) return 0;
 
         Queue<Node> queue = new LinkedList<>();
-        queue.offer(root);
+        queue.add(root);
         int maxWidth = 1;
 
         while (!queue.isEmpty()) {
@@ -134,7 +134,7 @@ class Solution {
             maxWidth = Math.max(maxWidth, levelSize);
             
             while (levelSize > 0) {
-                Node current = queue.poll();
+                Node current = queue.remove();
 
                 if (current.left != null)
                     queue.offer(current.left);
