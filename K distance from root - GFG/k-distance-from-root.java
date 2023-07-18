@@ -120,20 +120,18 @@ class Tree
 {
      // Recursive function to print right view of a binary tree.
      
-    ArrayList<Integer> Kdistance(Node root, int k) {
+    public static ArrayList<Integer> Kdistance(Node root, int k) {
         ArrayList<Integer> resList = new ArrayList<>();    
         dfs(root, k, resList);
         return resList;
     }
      
-    static void dfs(Node root, int k, ArrayList<Integer> resList){
+    public static void dfs(Node root, int k, ArrayList<Integer> resList){
         if(root == null) return;
-        if(k == 0){
-            resList.add(root.data);
-            return;
-        }
+        
+        if(k == 0) resList.add(root.data);
          
         dfs(root.left, k - 1, resList);
         dfs(root.right, k - 1, resList);         
-     }
+    }
 }
