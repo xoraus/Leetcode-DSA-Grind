@@ -1,52 +1,47 @@
-import java.util.*;
-
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
 class Solution {
-    Map<TreeNode, TreeNode> parent;
-    
-    private void preorder(TreeNode curr, TreeNode par) {
-        if (curr == null) return;
-        
-        parent.put(curr, par);
-        preorder(curr.left, curr);
-        preorder(curr.right, curr);
-    }
-    
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        parent = new HashMap<>();
-        preorder(root, null);
-        
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(target);
-        
-        Set<TreeNode> visited = new HashSet<>();
-        
-        while (!queue.isEmpty() && k > 0) {
-            k--;
-            int size = queue.size();
-            
-            for (int i = 0; i < size; i++) {
-                TreeNode curr = queue.poll();
-                visited.add(curr);
-                
-                if (curr.left != null && !visited.contains(curr.left)) {
-                    queue.offer(curr.left);
-                }
-                
-                if (curr.right != null && !visited.contains(curr.right)) {
-                    queue.offer(curr.right);
-                }
-                
-                if (parent.get(curr) != null && !visited.contains(parent.get(curr))) {
-                    queue.offer(parent.get(curr));
-                }
-            }
-        }
-        
         List<Integer> result = new ArrayList<>();
-        while (!queue.isEmpty()) {
-            result.add(queue.poll().val);
-        }
-        
+        findNodes(root, target, k, result);
         return result;
+    }
+
+    public int findNodes(TreeNode root, TreeNode target, int k, List<Integer> result) {
+        if (root == null) return -1;
+        if (root == target) {
+            dfs(root, k, result);
+            return 1;
+        }
+
+        int leftDist = findNodes(root.left, target, k, result);
+        if (leftDist >= 0) {
+            dfs(root.right, k - leftDist - 1, result);
+            if (leftDist == k) result.add(root.val);
+            return leftDist + 1;
+        }
+
+        int rightDist = findNodes(root.right, target, k, result);
+        if (rightDist >= 0) {
+            dfs(root.left, k - rightDist - 1, result);
+            if (rightDist == k) result.add(root.val);
+            return rightDist + 1;
+        }
+
+        return -1;
+    }
+
+    public void dfs(TreeNode root, int k, List<Integer> result) {
+        if (root == null || k < 0) return;
+        if (k == 0) result.add(root.val);
+        dfs(root.left, k - 1, result);
+        dfs(root.right, k - 1, result);
     }
 }
