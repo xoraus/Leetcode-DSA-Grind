@@ -118,20 +118,23 @@ class Node {
 */
 class Tree {
     // Function to find the minimum element in the given BST.
-    int min = Integer.MAX_VALUE;
-    
     int minValue(Node node) {
-       
-        if(node == null) return -1;
+        if (node == null) return -1;
         
-        if(node.data < min){
-            min = node.data;
-            minValue(node.left);
-        } else {
-            min = node.data;
-            minValue(node.right);
+        return findMinValue(node, Integer.MAX_VALUE);
+    }
+    
+    int findMinValue(Node node, int currentMin) {
+        if (node == null) return currentMin;
+        
+        if (node.data < currentMin) {
+            currentMin = node.data;
         }
         
-        return min;
+        int leftMin = findMinValue(node.left, currentMin);
+        int rightMin = findMinValue(node.right, currentMin);
+        
+        return Math.min(currentMin, Math.min(leftMin, rightMin));
     }
+
 }
