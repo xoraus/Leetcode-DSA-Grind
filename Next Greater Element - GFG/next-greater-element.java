@@ -32,17 +32,17 @@ class GFG {
 class Solution
 {
     //Function to find the next greater element for each element of the array.
-    public static long[] nextLargerElement(long[] arr, int n) { 
-        Stack<Integer> stk = new Stack<>();
-        long[] res = new long[n] ;
-        
-        for(int idx = n - 1; idx >= 0; idx--){
-            while(stk.size() > 0 && arr[idx] >= arr[stk.peek()]){
+    public static long[] nextLargerElement(long[] arr, int n) {
+        long[] nge = new long[n];
+        Stack<Long> stk = new Stack<>();
+
+        for (int idx = n - 1; idx >= 0; idx--) {
+            while (stk.size() > 0 && arr[idx] >= stk.peek()) {
                 stk.pop();
             }
-             res[idx] = (stk.size() > 0) ? arr[stk.peek()] : -1;
-            stk.push(idx);
+            nge[idx] = !stk.isEmpty() ? stk.peek() : -1;
+            stk.push(arr[idx]);
         }
-        return res;
+        return nge;
     } 
 }
