@@ -30,25 +30,25 @@ class GFG{
 //User function Template for Java
 
 
-class Solution
-{ 
-    //Function to find if there is a celebrity in the party or not.
-    int celebrity(int M[][], int n) {
-    	int ans = 0;
-        for (int idx = 1; idx < n; idx++) {
-            if (M[idx][ans] == 0) {
-                ans = idx;
+class Solution { 
+    public static boolean knows(int[][] M, int a, int b) {
+        return M[a][b] == 1;
+    }
+
+    public static int celebrity(int[][] M, int N) {
+        for (int i = 0; i < N; i++) {
+            boolean isCelebrity = true;
+            for (int j = 0; j < N; j++) {
+                if (i != j && (knows(M, i, j) || !knows(M, j, i))) {
+                    isCelebrity = false;
+                    break;
+                }
+            }
+            if (isCelebrity) {
+                return i;
             }
         }
-    
-        for (int i = 0; i < n; i++) {
-            if (i == ans)
-                continue;
-            if (M[ans][i] != 0)
-                return -1;
-            if (M[i][ans] != 1)
-                return -1;
-        }
-        return ans;
+        return -1;
     }
 }
+
