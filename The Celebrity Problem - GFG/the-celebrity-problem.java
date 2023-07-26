@@ -30,25 +30,38 @@ class GFG{
 //User function Template for Java
 
 
-class Solution { 
-    public static boolean knows(int[][] M, int a, int b) {
-        return M[a][b] == 1;
-    }
-
+class Solution
+{ 
     public static int celebrity(int[][] M, int N) {
-        for (int i = 0; i < N; i++) {
-            boolean isCelebrity = true;
-            for (int j = 0; j < N; j++) {
-                if (i != j && (knows(M, i, j) || !knows(M, j, i))) {
-                    isCelebrity = false;
-                    break;
-                }
-            }
-            if (isCelebrity) {
-                return i;
+        Stack<Integer> stack = new Stack<>();
+    
+        for (int person = 0; person < N; person++) {
+            stack.push(person);
+        }
+       
+        while (stack.size() >= 2) {
+            int personA = stack.pop();
+            int personB = stack.pop();
+    
+            if (knows(M, personA, personB)) {
+                stack.push(personB);
+            } else {
+                stack.push(personA);
             }
         }
-        return -1;
+    
+        int potentialCelebrity = stack.pop();
+    
+        for (int i = 0; i < N; i++) {
+            if (i != potentialCelebrity && (knows(M, potentialCelebrity, i) || !knows(M, i, potentialCelebrity))) {
+                return -1;
+            }
+        }
+    
+        return potentialCelebrity;
     }
+    
+    public static boolean knows(int[][] M, int a, int b) {
+        return M[a][b] == 1;
+    } 
 }
-
