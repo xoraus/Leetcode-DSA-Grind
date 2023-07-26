@@ -37,24 +37,25 @@ class Array
 
 class Solution
 { 
-    static int[] search(int[] arr, int idx, int key) {
-        if (idx == arr.length) 
-        	return new int[] { -1, -1 };
+    static int[] findIndex(int a[], int N, int key){ 
         
-        int[] ans = search(arr, idx + 1, key);
+        int fi = firstIndex(a, 0, key);
+        int li = lastIndex(a, N - 1, key);
         
-        if (arr[idx] == key) {
-            if(ans[0] == -1){
-            	ans[0] = ans[1] = idx;
-            } else {
-           		ans[0] = idx;
-            }
-            
-        }
-        return ans;
+        return new int[]{fi, li};
     }
     
-    static int[] findIndex(int a[], int N, int key) {
-        return search(a, 0, key);
+    static int firstIndex(int[] arr, int idx, int key){
+        if(idx == arr.length) return -1;
+        if(arr[idx] == key) return idx;
+        
+        return firstIndex(arr, idx + 1, key);
+    }
+    
+    static int lastIndex(int[] arr, int idx, int key){
+        if(idx == -1) return -1; 
+        if(arr[idx] == key) return idx;
+        
+        return lastIndex(arr, idx - 1, key);
     }
 }
