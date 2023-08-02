@@ -15,29 +15,19 @@
  */
 class Solution {
     public int goodNodes(TreeNode root) {
-        if(root == null) return 0;
-        if(root.left == null && root.right == null) return 1;
+        return search(root, Integer.MIN_VALUE);
+    }
 
-        int goodNodesCount = 1;
+    public int search(TreeNode root, int max) {
+        if (root == null) return 0;
 
-        goodNodesCount += search(root.left, root.val);
-        goodNodesCount += search(root.right, root.val);
+        int goodNodesCount = root.val >= max ? 1 : 0;
+        max = Math.max(max, root.val);
+
+        goodNodesCount += search(root.left, max);
+        goodNodesCount += search(root.right, max);
 
         return goodNodesCount;
     }
 
-    public int search(TreeNode root, int max){
-        if(root == null) return 0;
-        
-        int count = 0;
-        if(root.val >= max){
-            count++;
-            max = root.val;
-        }
-
-        count += search(root.left, max);
-        count += search(root.right, max);
-
-        return count;
-    }
 }
