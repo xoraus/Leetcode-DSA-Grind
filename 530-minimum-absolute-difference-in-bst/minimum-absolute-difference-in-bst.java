@@ -34,13 +34,8 @@ class Solution {
         if (root == null) return;
 
         inorder(root.left, result);
-
-        if (result.prev != (int) -1e8) {
-            result.diff = Math.min(result.diff, root.val - result.prev);
-        }
-
+        result.diff = Math.min(result.diff, root.val - result.prev);
         result.prev = root.val;
-
         inorder(root.right, result);
     }
 
