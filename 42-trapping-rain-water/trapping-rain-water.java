@@ -1,39 +1,30 @@
 class Solution {
     public int trap(int[] height) {
         int n = height.length;
-        int waterTrapped = 0;
+        int trappedWater = 0;
 
-        int[] pmax = prefixMax(height);
-        int[] smax = suffixMax(height);
+        for (int i = 1; i < n - 1; i++) {
+            int leftMax = 0;
+            int rightMax = 0;
 
-        for(int i = 0; i < n; i++){
-            int level = Math.min(pmax[i],smax[i]);
-            int water = level - height[i];
-            waterTrapped += water;
+            // Find the maximum height on the left side of the current bar
+            for (int j = i - 1; j >= 0; j--) {
+                leftMax = Math.max(leftMax, height[j]);
+            }
+
+            // Find the maximum height on the right side of the current bar
+            for (int j = i + 1; j < n; j++) {
+                rightMax = Math.max(rightMax, height[j]);
+            }
+
+            // Calculate the trapped water at the current bar
+            int minHeight = Math.min(leftMax, rightMax);
+            if (minHeight > height[i]) {
+                trappedWater += minHeight - height[i];
+            }
         }
-        return waterTrapped;
-    }
 
-    public int[] prefixMax(int[] arr){
-        int n = arr.length;
-        int[] pmax = new int[arr.length];
-        pmax[0] = arr[0]; 
-
-        for(int i = 1; i < n; i++){
-            pmax[i] = Math.max(arr[i],pmax[i-1]);
-        }
-        return pmax;
-    }
-
-    public int[] suffixMax(int[] arr){
-        int n = arr.length;
-        int[] smax = new int[arr.length];
-        smax[n-1] = arr[n-1];
-    
-        for(int i = n-2; i >= 0; i--){
-            smax[i] = Math.max(arr[i],smax[i+1]);
-        }
-        return smax;
+        return trappedWater;
     }
 }
 
