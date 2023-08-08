@@ -27,8 +27,6 @@ class GFG {
 
 
 //User function Template for Java
-
-
 class Solution {
     public static class TrieNode {
         TrieNode[] children = new TrieNode[26];
@@ -43,42 +41,8 @@ class Solution {
             children[ch - 'a'] = new TrieNode();
         }
     }
-
-    public void insertWord(TrieNode root, String word) {
-        TrieNode current = root;
-        for (int i = 0; i < word.length(); i++) {
-            char ch = word.charAt(i);
-
-            if (current.getChild(ch) == null) {
-                current.setChild(ch);
-            }
-
-            current.prefixCount++;
-            current = current.getChild(ch);
-        }
-
-        current.prefixCount++;
-        current.wordCount++;
-    }
-
-    public String findShortestUniquePrefix(TrieNode root, String word) {
-        TrieNode current = root;
-        StringBuilder prefix = new StringBuilder();
-        for (int i = 0; i < word.length(); i++) {
-            char ch = word.charAt(i);
-
-            if (current.prefixCount == 1) {
-                return prefix.toString();
-            }
-
-            prefix.append(ch);
-            current = current.getChild(ch);
-        }
-
-        return word;
-    }
-
-    public String[] findPrefixes(String[] words, int n) {
+    
+    public String[] findPrefixes(String[] words, int N) {
         TrieNode root = new TrieNode();
         for (String word : words) {
             insertWord(root, word);
@@ -90,4 +54,36 @@ class Solution {
         }
         return result;
     }
+
+    public void insertWord(TrieNode root, String word) {
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+
+            if (root.getChild(ch) == null) {
+                root.setChild(ch);
+            }
+
+            root.prefixCount++;
+            root = root.getChild(ch);
+        }
+
+        root.prefixCount++;
+        root.wordCount++;
+    }
+
+    public String findShortestUniquePrefix(TrieNode root, String word) {
+        StringBuilder prefix = new StringBuilder();
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+
+            if (root.prefixCount == 1) {
+                return word.substring(0, i);
+            }
+
+            root = root.getChild(ch);
+        }
+
+        return word;
+    }
 }
+ 
