@@ -35,19 +35,18 @@ class Solution {
     }
 
     public String searchRoot(TrieNode curr, String word) {
-        StringBuilder rootCandidate = new StringBuilder();
-        for (char ch : word.toCharArray()) {
-            if (curr.isTerminal()) {
-                return rootCandidate.toString();
-            }
+        for(int idx = 0; idx < word.length(); idx++){
+            char ch = word.charAt(idx);
+            
+            if (curr.isTerminal())
+                return word.substring(0, idx);
 
-            if (!curr.containsChild(ch)) {
+            if (!curr.containsChild(ch))
                 return word;
-            }
 
-            rootCandidate.append(ch);
             curr = curr.getChild(ch);
         }
+
         return word;
     }
 
