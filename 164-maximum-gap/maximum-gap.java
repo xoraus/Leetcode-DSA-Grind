@@ -1,6 +1,6 @@
 class Solution {
     public int[] countSort(int[] nums, int place) {
-        int[] freq = new int[101]; // Assuming input elements are between 0 and 100
+        int[] freq = new int[10]; // Assuming input elements are between 0 and 100
 
         // Pass 1: Count the frequency of each element in the input array (O(N))
         for (int ele : nums) {
