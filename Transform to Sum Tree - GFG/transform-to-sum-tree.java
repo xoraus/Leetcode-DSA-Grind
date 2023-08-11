@@ -130,17 +130,15 @@ class Solution{
     }
     
     public int convertToSumTree(Node root) {
-        if (root == null)
-            return 0;
+        if (root == null) return 0;
     
+        int originalValue = root.data;
+        
         int leftSum = convertToSumTree(root.left);
         int rightSum = convertToSumTree(root.right);
         
-        int originalValue = root.data;
-        root.data = leftSum + rightSum;
+        root.data =  leftSum + rightSum;
         
         return originalValue + root.data;
-    }
-
-
+    } 
 }
