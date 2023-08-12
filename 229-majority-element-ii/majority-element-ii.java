@@ -1,23 +1,42 @@
 class Solution {
-    public List<Integer> majorityElement(int[] nums) {
-        List<Integer> majorityElements = new ArrayList<>();
+    public boolean isActualAnswer(int[] nums, int target){
         int n = nums.length;
-        int threshold = n / 3;
-        
-        Map<Integer, Integer> frequencyMap = new HashMap<>();
-        
-        // Count occurrences of each element in the array
-        for (int num : nums) {
-            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
-        }
-        
-        // Check if the frequency of each element is greater than the threshold
-        for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
-            if (entry.getValue() > threshold) {
-                majorityElements.add(entry.getKey());
+        int freq = 0;
+
+        for(int val: nums){
+            if(val == target){
+                freq++;
             }
         }
-        
-        return majorityElements;
+
+        if(freq > n / 3) return true;
+        else return false;
+    }
+    public List<Integer> majorityElement(int[] nums) {
+        int majA = Integer.MIN_VALUE, leadA = 0;
+        int majB = Integer.MAX_VALUE, leadB = 0;
+
+        for(int val: nums){
+            if(val == majA){
+                leadA++;
+            } else if(val == majB){
+                leadB++;
+            } else if(leadA == 0){
+                majA = val;
+                leadA = 1;
+            } else if(leadB == 0){
+                majB = val;
+                leadB = 1;
+            } else {
+                leadA--;
+                leadB--;
+            }
+        }
+
+        List<Integer> answers = new ArrayList<>();
+        if(isActualAnswer(nums, majA) == true) answers.add(majA);
+        if(isActualAnswer(nums, majB) == true) answers.add(majB);
+
+        return answers;
     }
 }
