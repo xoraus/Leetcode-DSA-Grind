@@ -25,19 +25,20 @@ class GFG {
 // User function Template for Java
 
 class Solution {
-    int mod = 1000000007;
-    long memo(int noOfDigits, int prevDigit, long[][] dp){
-        if(noOfDigits == 0) return 1;
-        if(dp[noOfDigits][prevDigit] != 0){
-            return dp[noOfDigits][prevDigit];
+    long countStrings(int n) {
+        int MOD = 1000000007;
+        
+        long[] count0 = new long[n + 1];
+        long[] count1 = new long[n + 1];
+        
+        count0[1] = 1;
+        count1[1] = 1;
+        
+        for (int idx = 2; idx <= n; idx++) {
+            count0[idx] = (count0[idx - 1] + count1[idx - 1]) % MOD;
+            count1[idx] = count0[idx - 1] % MOD;
         }
         
-        long appending0 = memo(noOfDigits - 1, 0, dp);
-        long appending1 = (prevDigit == 0) ? memo(noOfDigits - 1, 1, dp) : 0l;
-        return dp[noOfDigits][prevDigit] = (appending0 + appending1) % mod;
-    }
-    long countStrings(int n) {
-        long[][] dp = new long[n + 1][2];
-        return memo(n, 0, dp);
+        return (count0[n] + count1[n]) % MOD;
     }
 }
