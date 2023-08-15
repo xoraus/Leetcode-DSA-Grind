@@ -1,20 +1,26 @@
 class Solution {
-    public static int reverse(int x) {
-        int reversed = 0;
-        
+    public int reverse(int x) {
+        // Stores the reversed number
+        long reversedNumber = 0;
+
+        // Reversing the digits of the input number
         while (x != 0) {
-            int pop = x % 10;
-            
-            // Check for integer overflow before updating 'reversed'
-            if (reversed > Integer.MAX_VALUE / 10 || (reversed == Integer.MAX_VALUE / 10 && pop > 7))
-                return 0;
-            if (reversed < Integer.MIN_VALUE / 10 || (reversed == Integer.MIN_VALUE / 10 && pop < -8))
-                return 0;
-            
-            reversed = reversed * 10 + pop;
-            x /= 10;
+            int lastDigit = x % 10;
+            reversedNumber = reversedNumber * 10 + lastDigit;
+            x = x / 10;
         }
-        
-        return reversed;
+
+        // Check for integer overflow/underflow
+        if (reversedNumber > Integer.MAX_VALUE || reversedNumber < Integer.MIN_VALUE) {
+            return 0; // Return 0 if overflow or underflow occurs
+        }
+
+        // Handling negative input
+        if (x < 0) {
+            return (int)(-1 * reversedNumber); // Return the negative reversed number
+        }
+
+        // Return the reversed number
+        return (int)reversedNumber;
     }
 }
