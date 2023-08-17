@@ -14,44 +14,44 @@
  * }
  */
 class Solution {
-    static class Pair {
-        TreeNode root;
-        int state = 1; // 1 -> preorder, 2 -> inorder, 3 -> postorder
-
-        Pair(TreeNode root) {
-            this.root = root;
-        }
-    }
-
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> preorder = new ArrayList<>();
-        Stack<Pair> stk = new Stack<>();
+        List<Integer> inorder = new ArrayList<>();
 
-        if (root != null) {
-            stk.push(new Pair(root));
-        }
+        while (root != null) {
+            if (root.left == null) {
+                preorder.add(root.val);
+                inorder.add(root.val);
+                root = root.right;
+                continue;
+            }
 
-        while (!stk.isEmpty()) {
-            TreeNode currentRoot = stk.peek().root;
+            TreeNode floor = findFloor(root);
+            while (floor.right != null && floor.right != root) {
+                floor = floor.right;
+            }
 
-            if (stk.peek().state == 1) {
-                // Preorder
-                preorder.add(currentRoot.val);
-                stk.peek().state++; // Next time: inorder
-                if (currentRoot.left != null) {
-                    stk.push(new Pair(currentRoot.left));
-                }
-            } else if (stk.peek().state == 2) {
-                // Inorder
-                stk.peek().state++; // Next time: postorder
-                if (currentRoot.right != null) {
-                    stk.push(new Pair(currentRoot.right));
-                }
+            if (floor.right == null) {
+                floor.right = root; // Thread creation
+                preorder.add(root.val);
+                root = root.left;
             } else {
-                // Postorder
-                stk.pop();
+                floor.right = null; // Thread deletion
+                inorder.add(root.val);
+                root = root.right;
             }
         }
+
         return preorder;
+    }
+
+    public TreeNode findFloor(TreeNode root) {
+        TreeNode floorNode = root.left;
+        
+        while (floorNode.right != null && floorNode.right != root) {
+            floorNode = floorNode.right;
+        }
+        
+        return floorNode;
     }
 }
