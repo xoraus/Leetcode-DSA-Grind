@@ -1,68 +1,38 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Tuple {
-    TreeNode node;
-    int row;
-    int col;
-
-    public Tuple(TreeNode _node, int _row, int _col) {
-        node = _node;
-        row = _row;
-        col = _col;
+class Solution {
+    TreeMap<Integer, TreeMap<Integer, ArrayList<Integer>>> vertical;
+    
+    public void DFS(TreeNode root, int row, int col){
+        if(root == null) return;
+        
+        if(vertical.containsKey(col) == false)
+            vertical.put(col, new TreeMap<>());
+        
+        if(vertical.get(col).containsKey(row) == false)
+            vertical.get(col).put(row, new ArrayList<>());
+        
+        vertical.get(col).get(row).add(root.val);
+        
+        DFS(root.left, row + 1, col - 1);
+        DFS(root.right, row + 1, col + 1);
     }
-}
-
-public class Solution {
+    
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-        TreeMap<Integer, TreeMap<Integer, PriorityQueue<Integer>>> map = new TreeMap<>();
-        Queue<Tuple> q = new LinkedList<>();
-        q.offer(new Tuple(root, 0, 0));
-
-        while (!q.isEmpty()) {
-            Tuple tuple = q.poll();
-            TreeNode node = tuple.node;
-            int x = tuple.row;
-            int y = tuple.col;
-
-            if (!map.containsKey(x)) {
-                map.put(x, new TreeMap<>());
-            }
-            if (!map.get(x).containsKey(y)) {
-                map.get(x).put(y, new PriorityQueue<>());
-            }
-            map.get(x).get(y).offer(node.val);
-
-            if (node.left != null) {
-                q.offer(new Tuple(node.left, x - 1, y + 1));
-            }
-            if (node.right != null) {
-                q.offer(new Tuple(node.right, x + 1, y + 1));
-            }
-        }
-
-        List<List<Integer>> result = new ArrayList<>();
-        for (TreeMap<Integer, PriorityQueue<Integer>> ys : map.values()) {
-            List<Integer> levelNodes = new ArrayList<>();
-            for (PriorityQueue<Integer> nodes : ys.values()) {
-                while (!nodes.isEmpty()) {
-                    levelNodes.add(nodes.poll());
+        vertical = new TreeMap<>();
+        DFS(root, 0, 0);
+        
+        List<List<Integer>> res = new ArrayList<>();
+        for(Integer col: vertical.keySet()){
+            TreeMap<Integer, ArrayList<Integer>> curr = vertical.get(col);
+            List<Integer> res1d = new ArrayList<>();
+            for(Integer row: curr.keySet()){
+                ArrayList<Integer> oned = curr.get(row);
+                Collections.sort(oned);
+                for(Integer val: oned){
+                    res1d.add(val);
                 }
             }
-            result.add(levelNodes);
+            res.add(res1d);
         }
-        return result;
+        return res;
     }
 }
