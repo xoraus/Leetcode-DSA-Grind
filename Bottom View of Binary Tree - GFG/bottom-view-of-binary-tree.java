@@ -116,40 +116,39 @@ class GfG {
 
 //User function Template for Java
 
-
-class Solution
-{
-    //Function to return a list containing the bottom view of the given tree.
+class Solution {
+    public static class Pair{
+        int data;
+        int row;
+        Pair(int data, int row){
+            this.data = data;
+            this.row = row;
+        }
+    }
+    // Column (Vertical Level) as Key vs Row & Its Elements in Pair
     
-    public ArrayList<Integer> bottomView(Node root) {
-        ArrayList<Integer> bottomViewList = new ArrayList<>();
-        if (root == null) return bottomViewList;
+    TreeMap<Integer, Pair> vertical;
+    
+    void DFS(Node root, int row, int col){
+        if(root == null) return;
+        if(vertical.containsKey(col) == false){
+            vertical.put(col, new Pair(root.data, row));
+        } else if(vertical.get(col).row <= row) {
+            vertical.get(col).row = row;
+            vertical.get(col).data = root.data;
+        }
         
-        Map<Integer, Integer> horizontalDistanceToValueMap = new TreeMap<>();
-        Queue<Node> queue = new LinkedList<>();
-        root.hd = 0;
-        queue.add(root);
+        DFS(root.left, row + 1, col - 1);
+        DFS(root.right, row + 1, col + 1);
+    }
     
-        while (!queue.isEmpty()) {
-            Node currentNode = queue.remove();
-            int horizontalDistance = currentNode.hd;
-            horizontalDistanceToValueMap.put(horizontalDistance, currentNode.data);
-    
-            if (currentNode.left != null) {
-                currentNode.left.hd = horizontalDistance - 1;
-                queue.add(currentNode.left);
-            }
-    
-            if (currentNode.right != null) {
-                currentNode.right.hd = horizontalDistance + 1;
-                queue.add(currentNode.right);
-            }
+    public ArrayList <Integer> bottomView(Node root) {
+        vertical = new TreeMap<>();
+        DFS(root, 0, 0);
+        ArrayList<Integer> bottomView = new ArrayList<>();
+        for(Integer key: vertical.keySet()){
+            bottomView.add(vertical.get(key).data);
         }
-    
-        for (Map.Entry<Integer, Integer> entry : horizontalDistanceToValueMap.entrySet()) {
-            bottomViewList.add(entry.getValue());
-        }
-    
-        return bottomViewList;
+        return bottomView;
     }
 }
