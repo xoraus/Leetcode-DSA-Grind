@@ -124,47 +124,39 @@ class Node{
 }
 */
 
-class Solution
-{
-    class Pair {
-        Node node;
-        int horizontalDistance;
-    
-        Pair(Node node, int horizontalDistance) {
-            this.node = node;
-            this.horizontalDistance = horizontalDistance;
+class Solution {
+    public static class Pair{
+        int data;
+        int row;
+        Pair(int data, int row){
+            this.data = data;
+            this.row = row;
         }
     }
-    public ArrayList<Integer> topView(Node root) {
-        ArrayList<Integer> result = new ArrayList<>();
-        if (root == null) return result;
+    // Column (Vertical Level) as Key vs Row & Its Elements in Pair
+    static TreeMap<Integer, Pair> vertical;
+    
+    static void DFS(Node root, int row, int col){
+        if(root == null) return;
+        if(vertical.containsKey(col) == false){
+            vertical.put(col, new Pair(root.data, row));
+        } else if(vertical.get(col).row > row) {
+            vertical.get(col).row = row;
+            vertical.get(col).data = root.data;
+        }
         
-        Map<Integer, Integer> horizontalDistanceToValueMap = new TreeMap<>();
-        Queue<Pair> queue = new LinkedList<>();
-        queue.offer(new Pair(root, 0));
+        DFS(root.left, row + 1, col - 1);
+        DFS(root.right, row + 1, col + 1);
+    }
     
-        while (!queue.isEmpty()) {
-            Pair item = queue.remove();
-            int horizontalDistance = item.horizontalDistance;
-            Node currentNode = item.node;
-    
-            if (!horizontalDistanceToValueMap.containsKey(horizontalDistance)) {
-                horizontalDistanceToValueMap.put(horizontalDistance, currentNode.data);
-            }
-    
-            if (currentNode.left != null) {
-                queue.offer(new Pair(currentNode.left, horizontalDistance - 1));
-            }
-    
-            if (currentNode.right != null) {
-                queue.offer(new Pair(currentNode.right, horizontalDistance + 1));
-            }
+    static ArrayList<Integer> topView(Node root)
+    {
+        vertical = new TreeMap<>();
+        DFS(root, 0, 0);
+        ArrayList<Integer> topView = new ArrayList<>();
+        for(Integer key: vertical.keySet()){
+            topView.add(vertical.get(key).data);
         }
-    
-        for (Map.Entry<Integer, Integer> entry : horizontalDistanceToValueMap.entrySet()) {
-            result.add(entry.getValue());
-        }
-    
-        return result;
+        return topView;
     }
 }
