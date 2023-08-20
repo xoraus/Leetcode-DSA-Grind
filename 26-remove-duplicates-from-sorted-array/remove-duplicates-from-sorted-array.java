@@ -10,10 +10,6 @@ class Solution {
             nums[idx++] = element; 
         }
 
-        while(idx < nums.length){
-            nums[idx++] = 101;
-        }
-
         return set.size();
     }
 }
