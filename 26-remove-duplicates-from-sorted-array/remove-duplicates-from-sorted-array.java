@@ -1,13 +1,19 @@
 class Solution {
     public int removeDuplicates(int[] nums) {
-        int ptr1 = 0;
+        LinkedHashSet<Integer> set = new LinkedHashSet<>();
+        for(int num: nums){
+            set.add(num);
+        }        
 
-        for (int ptr2 = 1; ptr2 < nums.length; ptr2++) {
-            if (nums[ptr1] != nums[ptr2]) {
-                nums[ptr1 + 1] = nums[ptr2];
-                ptr1++;
-            }
+        int idx = 0;
+        for(int element: set){
+            nums[idx++] = element; 
         }
-        return ptr1 + 1;
+
+        while(idx < nums.length){
+            nums[idx++] = 101;
+        }
+
+        return set.size();
     }
 }
