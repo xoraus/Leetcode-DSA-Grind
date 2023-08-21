@@ -1,18 +1,19 @@
 class Solution {
     public int majorityElement(int[] nums) {
-        int threshold = nums.length / 2;
-        HashMap<Integer, Integer> countMap = new HashMap<>();        
+        int majorityElement = 0; 
+        int lead = 0; 
 
         for (int num : nums) {
-            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
-        }
-
-        for(int key: countMap.keySet()){
-            if(countMap.get(key) > threshold){
-                return key;
+            if (num == majorityElement) {
+                lead++;
+            } else if (lead == 0) {
+                majorityElement = num;
+                lead = 1;
+            } else {
+                lead--;
             }
         }
 
-        return -1;
+        return majorityElement;
     }
 }
