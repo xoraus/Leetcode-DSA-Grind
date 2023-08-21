@@ -36,10 +36,9 @@ class Solution
         }
         
         int count = 0;
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            if (entry.getValue() > threshold) {
-                count++;
-            }
+        
+        for(int key: map.keySet()){
+            if(map.get(key) > threshold) count++;
         }
         
         return count;
