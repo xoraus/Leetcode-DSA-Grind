@@ -1,47 +1,46 @@
 class Solution {
-    public void nextPermutation(int[] array) {
-        ArrayList<Integer> nums = new ArrayList<>();
-        for (int num : array) nums.add(num);
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        int breakPoint = findBreakPoint(nums, n);
 
-        int n = nums.size(); // size of the array.
-
-        // Step 1: Find the break point:
-        int breakPoint = -1; // break point
-        for (int i = n - 2; i >= 0; i--) {
-            if (nums.get(i) < nums.get(i + 1)) {
-                // index i is the break point
-                breakPoint = i;
-                break;
-            }
-        }
-
-        // If break point does not exist:
         if (breakPoint == -1) {
-            // reverse the whole array:
-            Collections.reverse(nums);
-            for (int idx = 0; idx < n; idx++) {
-                array[idx] = nums.get(idx);
-            }
-            return;
+            reverse(nums, 0, n - 1);
+        } else {
+            int nextGreaterIndex = findNextGreater(nums, breakPoint, n);
+            swap(nums, breakPoint, nextGreaterIndex);
+            reverse(nums, breakPoint + 1, n - 1);
         }
+    }
 
-        // Step 2: Find the next greater element
-        //         and swap it with nums[breakPoint]:
+    private int findBreakPoint(int[] nums, int n) {
+        for (int i = n - 2; i >= 0; i--) {
+            if (nums[i] < nums[i + 1]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int findNextGreater(int[] nums, int breakPoint, int n) {
         for (int i = n - 1; i > breakPoint; i--) {
-            if (nums.get(i) > nums.get(breakPoint)) {
-                int tmp = nums.get(i);
-                nums.set(i, nums.get(breakPoint));
-                nums.set(breakPoint, tmp);
-                break;
+            if (nums[i] > nums[breakPoint]) {
+                return i;
             }
         }
+        return -1;
+    }
 
-        // Step 3: reverse the right half:
-        List<Integer> sublist = nums.subList(breakPoint + 1, n);
-        Collections.reverse(sublist);
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
 
-        for (int idx = 0; idx < n; idx++) {
-            array[idx] = nums.get(idx);
+    private void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            swap(nums, start, end);
+            start++;
+            end--;
         }
     }
 }
