@@ -1,28 +1,19 @@
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-        HashMap<String, List<String>> groupedAnagrams = new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>();
         
         for (String word : strs) {
-            int[] charFrequency = new int[26]; // Assuming only lowercase English letters
+            char[] chars = word.toCharArray();
+            Arrays.sort(chars);
+            String sortedWord = new String(chars);
             
-            for (int i = 0; i < word.length(); i++) {
-                char ch = word.charAt(i);
-                charFrequency[ch - 'a']++;
+            if (!map.containsKey(sortedWord)) {
+                map.put(sortedWord, new ArrayList<>());
             }
             
-            StringBuilder keyBuilder = new StringBuilder();
-            for (int count : charFrequency) {
-                keyBuilder.append('#');
-                keyBuilder.append(count);
-            }
-            String key = keyBuilder.toString();
-            
-            if (!groupedAnagrams.containsKey(key)) {
-                groupedAnagrams.put(key, new ArrayList<>());
-            }
-            groupedAnagrams.get(key).add(word);
+            map.get(sortedWord).add(word);
         }
         
-        return new ArrayList<>(groupedAnagrams.values());
+        return new ArrayList<>(map.values());
     }
 }
