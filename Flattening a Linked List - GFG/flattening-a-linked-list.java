@@ -118,6 +118,18 @@ class Node
 /*  Function which returns the  root of 
     the flattened linked list. */
 class GfG {
+    Node flatten(Node root) {
+         if(root == null || root.next == null){
+            return root;
+        }
+    
+        root.next = flatten(root.next);
+        root = mergeTwoLists(root, root.next);
+    
+        return root;
+	    
+    }
+    
     Node mergeTwoLists(Node headA, Node headB){
         Node dummy = new Node(0);
         Node tail = dummy;
@@ -127,30 +139,16 @@ class GfG {
                 tail.bottom = headA;
                 tail = tail.bottom;
                 headA = headA.bottom;
-            } else{
+            } else {
                 tail.bottom = headB;
                 tail = tail.bottom;
                 headB = headB.bottom;
             }
         }
-        
-        if(headA != null){
-            tail.bottom = headA;
-        }
-        
-        if(headB != null){
-            tail.bottom = headB;
-        }
-        
-        return dummy.bottom;
     
-    }
-    Node flatten(Node root){
-	    if(root == null || root.next == null){
-	        return root;
-	    }
-	    
-	    root.next = flatten(root.next);
-        return mergeTwoLists(root, root.next);
+        if(headA != null) tail.bottom = headA;
+        if(headB != null) tail.bottom = headB;
+    
+        return dummy.bottom;
     }
 }
