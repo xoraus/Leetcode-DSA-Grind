@@ -42,17 +42,18 @@ public class Main
 // } Driver Code Ends
 
 
+
+
 //User function Template for Java
 
 class Solution
 {
-    //Function to merge the arrays.
     public static void merge(long array1[], long array2[], int lengthArray1, int lengthArray2) {
         // Total length of the merged array:
         int totalLength = lengthArray1 + lengthArray2;
     
         // Initial gap for comparisons:
-        int gap = (totalLength / 2) + (totalLength % 2); // % will help in getting the ceiling
+        int gap = (totalLength / 2) + (totalLength % 2); // Use integer division to get the floor value
     
         while (gap > 0) {
             // Set up two pointers:
@@ -62,12 +63,12 @@ class Solution
             while (right < totalLength) {
                 // Case 1: Both pointers in array1[]:
                 if (left < lengthArray1 && right < lengthArray1) {
-                    swapIfGreater(array1, left, right);
+                    swapIfGreater(array1, array1, left, right);
                 }
     
                 // Case 2: Both pointers in array2[]:
                 else if (left >= lengthArray1) {
-                    swapIfGreater(array2, left - lengthArray1, right - lengthArray1);
+                    swapIfGreater(array2, array2, left - lengthArray1, right - lengthArray1);
                 }
     
                 // Case 3: Left pointer in array1[] and right pointer in array2[]:
@@ -78,32 +79,20 @@ class Solution
                 left++;
                 right++;
             }
-    
-            // Break if iteration with gap=1 is completed:
-            if (gap == 1) {
-                break;
-            }
+            
+            if(gap == 1) break;
     
             // Calculate new gap:
             gap = (gap / 2) + (gap % 2);
         }
     }
     
-    // Helper method to swap elements in an array if the left element is greater than the right element
-    private static void swapIfGreater(long[] array, int left, int right) {
-        if (array[left] > array[right]) {
-            long temp = array[left];
-            array[left] = array[right];
-            array[right] = temp;
+    public static void swapIfGreater(long[] array1, long[] array2, int index1, int index2) {
+        if (array1[index1] > array2[index2]) {
+            long temp = array1[index1];
+            array1[index1] = array2[index2];
+            array2[index2] = temp;
         }
     }
 
-    
-    public static void swapIfGreater(long[] array1, long[] array2, int index1, int index2) {
-    if (array1[index1] > array2[index2]) {
-        long temp = array1[index1];
-        array1[index1] = array2[index2];
-        array2[index2] = temp;
-    }
-} 
 }
