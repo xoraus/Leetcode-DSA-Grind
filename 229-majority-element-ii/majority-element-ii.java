@@ -34,6 +34,7 @@ class Solution {
         }
 
         List<Integer> answers = new ArrayList<>();
+        
         if(isActualAnswer(nums, majA) == true) answers.add(majA);
         if(isActualAnswer(nums, majB) == true) answers.add(majB);
 
