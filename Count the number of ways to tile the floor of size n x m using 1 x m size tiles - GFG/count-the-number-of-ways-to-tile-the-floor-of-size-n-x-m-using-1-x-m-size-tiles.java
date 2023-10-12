@@ -27,26 +27,25 @@ class GFG
 
 
 //User function Template for Java
-class Solution {
-    int mod = 1000000007;
 
-    // Memoization -> O(n) Time, O(n) Space
-    
-    public int countWays(int n, int m) {
-        int[] dp = new int[n + 1];
-        Arrays.fill(dp, -1);
-        return memo(n, m, dp);
-    }
-    
-    public int memo(int n, int m, int[] dp) {
-        if (n < m) return 1;
-        if (n == m) return 2;
+class Solution
+{
+    public int countWays(int floorLength, int tileWidth) {
+        int mod = 1000000007;
+        int[] waysToTile = new int[floorLength + 1];
         
-        if (dp[n] != -1) return dp[n];
+        // Initialize base cases
+        for (int i = 1; i <= floorLength; i++) {
+            if (i < tileWidth) {
+                waysToTile[i] = 1;
+            } else if (i == tileWidth) {
+                waysToTile[i] = 2;
+            } else {
+                waysToTile[i] = (waysToTile[i - 1] + waysToTile[i - tileWidth]) % mod;
+            }
+        }
+        
+        return waysToTile[floorLength];
+    }
 
-        int ans1 = memo(n - 1, m, dp);
-        int ans2 = memo(n - m, m, dp);
-        
-        return dp[n] = (ans1 + ans2) % mod;
-    }
 }
