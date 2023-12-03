@@ -19,10 +19,6 @@ class Solution {
         return (int) ((kadane(twice) + (k - 2l) * total) % m);
     }
 
-    public long add(long a, long b) {
-        return (a % m + b % m) % m;
-    }
-
     public long kadane(int[] arr) {
         long currSum = 0, maxSum = 0;
         for (int i = 0; i < arr.length; i++) {
