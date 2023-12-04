@@ -1,31 +1,34 @@
-public class Solution {
-    public double knightProbability(int n, int k, int row, int column) {
-        int[][] dir = {{1,2},{-1,2},{1,-2},{-1,-2},{2,1},{-2,1},{2,-1},{-2,-1}};
+class Solution {
+    int[][] moves = {{+1, +2}, {+1, -2}, {-1, +2}, {-1, -2}, 
+                     {+2, +1}, {+2, -1}, {-2, +1}, {-2, -1}};
 
-        double[][][] dp = new double[k + 1][n][n];
-        dp[0][row][column] = 1.0;
-        int prevI;
-        int prevJ;
-        for (int m = 1; m <= k; m++) {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) { 
-                    for (int[] d : dir) {
-                        prevI = i - d[0];
-                        prevJ = j - d[1];
-                        if (prevI >= 0 && prevI < n && prevJ >= 0 && prevJ < n) {
-                            dp[m][i][j] += dp[m - 1][prevI][prevJ] / 8.0;
-                        }
-                    }
+    public double knightProbability(int n, int k, int r, int c) {
+        double[][][] dp = new double[n + 1][n + 1][k + 1];
+        for(int i=0; i<=n; i++){
+            for(int j=0; j<=n; j++){
+                for(int l=0; l<=k; l++){
+                    dp[i][j][l] = -1.0;
                 }
             }
         }
-
-        double ans = 0.0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                ans += dp[k][i][j];
+        
+        return helper(n, k, r, c, dp);
+    }                 
+    
+    public double helper(int n, int k, int r, int c, double[][][] dp){
+        if(k == 0) return 1.0;
+        if(dp[r][c][k] != -1.0) return dp[r][c][k];
+        
+        double prob = 0.0;
+        for(int m=0; m<8; m++){
+            int nr = r + moves[m][0];
+            int nc = c + moves[m][1];
+            
+            if(nr >= 0 && nr < n && nc >= 0 && nc < n){
+                prob = prob + ((1.0 / 8.0) * helper(n, k - 1, nr, nc, dp));
             }
         }
-        return ans;
+        
+        return dp[r][c][k] = prob;
     }
 }
