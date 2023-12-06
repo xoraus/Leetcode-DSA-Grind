@@ -2,7 +2,6 @@ class Solution {
     public boolean isActualAnswer(int[] nums, int target){
         int n = nums.length;
         int freq = 0;
-
         for(int val: nums){
             if(val == target){
                 freq++;
