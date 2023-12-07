@@ -1,28 +1,40 @@
 class Solution {
     public int[] productExceptSelf(int[] nums) {
+        int[] prefix = getPrefix(nums);
+        int[] suffix = getSuffix(nums);
+
         int n = nums.length;
-        int[] result = new int[n];
-        int productOfAll = 1;
-        int zeroCount = 0; // Count of zero values
+        int[] answer = new int[n];
 
-        for (int num : nums) {
-            if (num == 0) {
-                zeroCount++;
-                continue;
-            }
-            productOfAll *= num;
+
+        for(int idx = 0; idx < n; idx++){
+            int left = (idx > 0) ? prefix[idx - 1] : 1;
+            int right = (idx < n - 1) ? suffix[idx + 1] : 1;
+            answer[idx] = left * right; 
         }
 
-        for (int i = 0; i < n; i++) {
-            if (zeroCount > 1) { // If more than one zero, all products are zero
-                result[i] = 0;
-            } else if (zeroCount == 1 && nums[i] == 0) { // If one zero, result is productOfAll
-                result[i] = productOfAll;
-            } else if (zeroCount == 0) { // If no zeros, regular division
-                result[i] = productOfAll / nums[i];
-            }
-        }
+        return answer;
+        
+    }
 
-        return result;
+    public int[] getPrefix(int[] nums){
+        int[] prefixSum = new int[nums.length];
+        
+        for(int idx = 0; idx < nums.length; idx++){
+            prefixSum[idx] = nums[idx] *  ((idx > 0) ? prefixSum[idx - 1] : 1);
+        }
+        
+        return prefixSum;
+    }
+
+    public int[] getSuffix(int[] nums){
+        int[] suffixSum = new int[nums.length];
+        int n = nums.length;
+
+        for(int idx = n - 1; idx >= 0; idx--){
+            suffixSum[idx] =nums[idx] * ((idx < n - 1) ? suffixSum[idx + 1] : 1) ;
+        }
+        
+        return suffixSum;
     }
 }
