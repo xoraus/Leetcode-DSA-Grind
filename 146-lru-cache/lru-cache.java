@@ -1,74 +1,84 @@
 class LRUCache {
-    
-    class Node {
+    public static class Node{
         int key;
         int val;
-        Node next;
         Node prev;
-
-        public Node(int key, int val) {
+        Node next;
+        Node(int key, int val){
             this.key = key;
             this.val = val;
-            next = null;
-            prev = null;
         }
     }
     
-    HashMap<Integer, Node> hashMap;
-    Node MRU;
-    Node LRU;
-    int capacity;
-
+    int size = 0, capacity;
+    Node head, tail;
+    HashMap<Integer, Node> hm;
+        
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        hashMap = new HashMap<>();
-        MRU = new Node(-1, -1);
-        LRU = new Node(-1, -1);
-        MRU.next = LRU;
-        LRU.prev = MRU;
-
-    }
-
-    private void addNode(Node newNode) {
-        Node temp = MRU.next;
-        MRU.next = newNode;
-        newNode.prev = MRU;
-        newNode.next = temp;
-        temp.prev = newNode;
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+        head.next = tail;
+        tail.prev = head;
+        size = 0;
+        hm = new HashMap<>();
     }
     
-    private void deleteNode(Node node) {
-        Node prev = node.prev;
-        Node next = node.next;
-        prev.next = next;
-        next.prev = prev;
-    }
-
-
     public int get(int key) {
-        if (!hashMap.containsKey(key))
+        if(hm.containsKey(key) == false)
             return -1;
-        put(key,hashMap.get(key).val);
-        return hashMap.get(key).val;
         
+        Node curr = hm.get(key);
+        
+        // Remove At
+        curr.prev.next = curr.next;
+        curr.next.prev = curr.prev;
+        
+        // Add First
+        curr.prev = head;
+        curr.next = head.next;
+        curr.prev.next = curr;
+        curr.next.prev = curr;
+        
+        return curr.val;
     }
-
+    
     public void put(int key, int value) {
-        if (hashMap.containsKey(key)) {
-            Node node = hashMap.get(key);
-            deleteNode(node);
-            node.val = value;
-            addNode(node);
-            hashMap.put(key, MRU.next);
+        if(hm.containsKey(key) == false){
+            // Insert
+            Node curr = new Node(key, value);
+            
+            if(size == capacity){
+                // Remove Last
+                Node temp = tail.prev;
+                temp.prev.next = temp.next;
+                temp.next.prev = temp.prev;
+                hm.remove(temp.key);
+                
+            } else size++;
+            
+            // Add First
+            curr.prev = head;
+            curr.next = head.next;
+            curr.prev.next = curr;
+            curr.next.prev = curr;
+            hm.put(key, curr);
+            
         } else {
-            if (hashMap.size() == capacity) {
-                Node prev = LRU.prev;
-                deleteNode(prev);
-                hashMap.remove(prev.key);       
-            }
-            Node newNode = new Node(key, value);
-            addNode(newNode);
-            hashMap.put(key, MRU.next);
+            // Update
+            Node curr = hm.get(key);
+        
+            // Remove At
+            curr.prev.next = curr.next;
+            curr.next.prev = curr.prev;
+
+            // Add First
+            curr.prev = head;
+            curr.next = head.next;
+            curr.prev.next = curr;
+            curr.next.prev = curr;
+            
+            curr.val = value;
         }
     }
 }
