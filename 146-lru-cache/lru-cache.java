@@ -1,84 +1,85 @@
-class LRUCache {
-    public static class Node{
+public class LRUCache {
+
+    static class CacheNode {
         int key;
-        int val;
-        Node prev;
-        Node next;
-        Node(int key, int val){
+        int value;
+        CacheNode prev;
+        CacheNode next;
+
+        CacheNode(int key, int value) {
             this.key = key;
-            this.val = val;
+            this.value = value;
         }
     }
-    
-    int size = 0, capacity;
-    Node head, tail;
-    HashMap<Integer, Node> hm;
-        
+
+    private int currentSize = 0;
+    private final int capacity;
+    private final CacheNode head;
+    private final CacheNode tail;
+    private final HashMap<Integer, CacheNode> cacheMap;
+
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        head = new Node(-1, -1);
-        tail = new Node(-1, -1);
-        head.next = tail;
-        tail.prev = head;
-        size = 0;
-        hm = new HashMap<>();
+        this.head = new CacheNode(-1, -1);
+        this.tail = new CacheNode(-1, -1);
+        this.head.next = this.tail;
+        this.tail.prev = this.head;
+        this.currentSize = 0;
+        this.cacheMap = new HashMap<>();
     }
-    
-    public int get(int key) {
-        if(hm.containsKey(key) == false)
-            return -1;
-        
-        Node curr = hm.get(key);
-        
-        // Remove At
-        curr.prev.next = curr.next;
-        curr.next.prev = curr.prev;
-        
-        // Add First
-        curr.prev = head;
-        curr.next = head.next;
-        curr.prev.next = curr;
-        curr.next.prev = curr;
-        
-        return curr.val;
-    }
-    
-    public void put(int key, int value) {
-        if(hm.containsKey(key) == false){
-            // Insert
-            Node curr = new Node(key, value);
-            
-            if(size == capacity){
-                // Remove Last
-                Node temp = tail.prev;
-                temp.prev.next = temp.next;
-                temp.next.prev = temp.prev;
-                hm.remove(temp.key);
-                
-            } else size++;
-            
-            // Add First
-            curr.prev = head;
-            curr.next = head.next;
-            curr.prev.next = curr;
-            curr.next.prev = curr;
-            hm.put(key, curr);
-            
-        } else {
-            // Update
-            Node curr = hm.get(key);
-        
-            // Remove At
-            curr.prev.next = curr.next;
-            curr.next.prev = curr.prev;
 
-            // Add First
-            curr.prev = head;
-            curr.next = head.next;
-            curr.prev.next = curr;
-            curr.next.prev = curr;
-            
-            curr.val = value;
+    public int get(int key) {
+        if (!cacheMap.containsKey(key)) {
+            return -1;
+        }
+
+        CacheNode currentNode = cacheMap.get(key);
+
+        // Remove node
+        removeNode(currentNode);
+
+        // Add node to the front
+        addToFront(currentNode);
+
+        return currentNode.value;
+    }
+
+    public void put(int key, int value) {
+        if (!cacheMap.containsKey(key)) {
+            // Insert new node
+            CacheNode newNode = new CacheNode(key, value);
+
+            if (currentSize == capacity) {
+                // Remove the last node
+                CacheNode lastNode = tail.prev;
+                removeNode(lastNode);
+                cacheMap.remove(lastNode.key);
+            } else {
+                currentSize++;
+            }
+
+            // Add the new node to the front
+            addToFront(newNode);
+            cacheMap.put(key, newNode);
+        } else {
+            // Update existing node
+            CacheNode currentNode = cacheMap.get(key);
+            removeNode(currentNode);
+            addToFront(currentNode);
+            currentNode.value = value;
         }
     }
+
+    private void removeNode(CacheNode node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    private void addToFront(CacheNode node) {
+        node.prev = head;
+        node.next = head.next;
+        node.prev.next = node;
+        node.next.prev = node;
+    }
 }
+ 
