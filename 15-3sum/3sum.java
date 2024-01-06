@@ -1,23 +1,43 @@
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        Set<List<Integer>> triplets = new HashSet<>();
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length == 0) {
+            return res;
+        }
 
-        for (int i = 0; i < nums.length; i++) {
-            Set<Integer> hashset = new HashSet<>();
-            for (int j = i + 1; j < nums.length; j++) {
-                int third = -(nums[i] + nums[j]);
-                if (hashset.contains(third)) {
-                    List<Integer> temp = new ArrayList<>();
-                    temp.add(nums[i]);
-                    temp.add(nums[j]);
-                    temp.add(third);
-                    Collections.sort(temp);
-                    triplets.add(temp);
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue; // Skip duplicates in the outer loop
+            }
+            int j = i + 1;
+            int k = nums.length - 1;
+
+            while (j < k) {
+                int sum = nums[i] + nums[j] + nums[k];
+
+                if (sum == 0) {
+                    res.add(Arrays.asList(nums[i], nums[j], nums[k]));
+
+                    // Skip duplicates in the inner loop
+                    while (j < k && nums[j] == nums[j + 1]) {
+                        j++;
+                    }
+                    while (j < k && nums[k] == nums[k - 1]) {
+                        k--;
+                    }
+
+                    j++;
+                    k--;
+                } else if (sum > 0) {
+                    k--;
+                } else {
+                    j++;
                 }
-                hashset.add(nums[j]);
             }
         }
 
-        return new ArrayList<>(triplets);
+        return res;
     }
 }
