@@ -1,35 +1,37 @@
 class Solution {
-    private int[] memo;
-    private int n;
-
     public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
-        n = startTime.length;
+        int n = startTime.length;
+        int[][] jobs = new int[n][3]; // {s, e, p}
 
-        memo = new int[n];
+        for (int i = 0; i < n; i++)
+            jobs[i] = new int[]{startTime[i], endTime[i], profit[i]};
+
+        Arrays.sort(jobs, Comparator.comparingInt(vec -> vec[0]));
+
+        int[] memo = new int[n];
         Arrays.fill(memo, -1);
 
-        int[][] array = new int[n][3]; // {s, e, p}
-
-        for (int i = 0; i < n; i++) {
-            array[i][0] = startTime[i];
-            array[i][1] = endTime[i];
-            array[i][2] = profit[i];
-        }
-
-        Arrays.sort(array, Comparator.comparingInt(vec -> vec[0]));
-
-        return solve(array, 0);
+        return helper(jobs, 0, memo);
     }
 
-    // Find the first job whose starting point >= currentJob's end point
-    private int getNextIndex(int[][] array, int l, int currentJobEnd) {
-        int r = n - 1;
-        int result = n + 1;
+    private int helper(int[][] jobs, int i, int[] memo) {
+        if (i >= jobs.length) return 0;
+        if (memo[i] != -1) return memo[i];
+
+        int next = getNextIndex(jobs, i + 1, jobs[i][1]);
+        int taken = jobs[i][2] + helper(jobs, next, memo);
+        int notTaken = helper(jobs, i + 1, memo);
+
+        return memo[i] = Math.max(taken, notTaken);
+    }
+
+    private int getNextIndex(int[][] jobs, int l, int currentJobEnd) {
+        int r = jobs.length - 1;
+        int result = jobs.length + 1;
 
         while (l <= r) {
             int mid = l + (r - l) / 2;
-
-            if (array[mid][0] >= currentJobEnd) { // we can take this task
+            if (jobs[mid][0] >= currentJobEnd) {
                 result = mid;
                 r = mid - 1;
             } else {
@@ -38,20 +40,5 @@ class Solution {
         }
 
         return result;
-    }
-
-    private int solve(int[][] array, int i) {
-        if (i >= n)
-            return 0;
-
-        if (memo[i] != -1)
-            return memo[i];
-
-        int next = getNextIndex(array, i + 1, array[i][1]);
-
-        int taken = array[i][2] + solve(array, next);
-        int notTaken = solve(array, i + 1);
-
-        return memo[i] = Math.max(taken, notTaken);
     }
 }
