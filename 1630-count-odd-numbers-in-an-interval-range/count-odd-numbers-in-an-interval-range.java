@@ -1,16 +1,11 @@
-class Solution {
-    public static int countOdds(int low, int high) {
-        // Ensure low is odd, adjust if necessary
-        if (low % 2 == 0) {
-            low++;
-        }
+public class Solution {
+    public int countOdds(int low, int high) {
+        int range = high - low + 1;
+        int count = range / 2;
 
-        // Ensure high is odd, adjust if necessary
-        if (high % 2 == 0) {
-            high--;
-        }
+        if (range % 2 != 0 && low % 2 != 0)
+            count += 1;
 
-        // Calculate the count of odd numbers between low and high
-        return (high - low) / 2 + 1;
+        return count;
     }
 }
