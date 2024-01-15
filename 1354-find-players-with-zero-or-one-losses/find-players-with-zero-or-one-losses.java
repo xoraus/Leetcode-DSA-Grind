@@ -1,37 +1,22 @@
 class Solution {
     public List<List<Integer>> findWinners(int[][] matches) {
-        List<Integer> match0 = new ArrayList<>();
-        List<Integer> match1 = new ArrayList<>();
-
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> res0 = new ArrayList<>();
         List<Integer> res1 = new ArrayList<>();
-        
+
+        HashMap<Integer, Integer> map1 = new HashMap<>();
+        HashMap<Integer, Integer> map2 = new HashMap<>();
         for(int[] match: matches){
-            match0.add(match[0]);
-            match1.add(match[1]);
+            map1.put(match[0], map1.getOrDefault(match[0], 0) + 1);
+            map2.put(match[1], map2.getOrDefault(match[1], 0) + 1);
         }
 
-        HashMap<Integer, Integer> map = new HashMap<>();
-
-        for(int val: match1){
-            map.put(val, map.getOrDefault(val, 0) + 1);
+        for(int key: map2.keySet()){
+            if(map2.get(key) == 1) res1.add(key);
         }
 
-        for(int key: map.keySet()){
-            if(map.get(key) == 1) res1.add(key);
-        }
-
-        HashSet<Integer> set0 = new HashSet<>();
-        HashSet<Integer> set1 = new HashSet<>();
-
-        for(int[] match: matches){
-            set0.add(match[0]);
-            set1.add(match[1]);
-        }
-
-        for(int val : set0){
-            if(!set1.contains(val)) res0.add(val);
+        for(int key: map1.keySet()){
+            if(map2.get(key) == null) res0.add(key);
         }
 
         Collections.sort(res0);
