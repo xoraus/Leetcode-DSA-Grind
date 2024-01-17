@@ -1,10 +1,20 @@
 class Solution {
-    public boolean uniqueOccurrences(int[] arr) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for(int num: arr){
-            map.put(num, map.getOrDefault(num, 0) + 1);
+    public boolean uniqueOccurrences(int[] numbers) {
+        int[] frequencyCount = new int[2001];
+
+        for (int number : numbers) {
+            frequencyCount[number + 1000]++;
         }
 
-        return map.size() == new HashSet<>(map.values()).size();
+        Arrays.sort(frequencyCount);
+        
+        for (int i = 1; i < 2001; i++) {
+            if (frequencyCount[i] != 0 && frequencyCount[i] == frequencyCount[i - 1]) {
+                return false;
+            }
+        }
+
+        return true;
     }
+    
 }
