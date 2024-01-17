@@ -1,20 +1,21 @@
 class Solution {
-    public boolean uniqueOccurrences(int[] numbers) {
-        int[] frequencyCount = new int[2001];
-
-        for (int number : numbers) {
-            frequencyCount[number + 1000]++;
+    public boolean uniqueOccurrences(int[] arr) {
+        int[] numberOfOccurrences = new int[2001];
+        boolean[] used = new boolean[1001];
+        
+        for (int i : arr) {
+            numberOfOccurrences[1000 + i]++;
         }
 
-        Arrays.sort(frequencyCount);
-        
-        for (int i = 1; i < 2001; i++) {
-            if (frequencyCount[i] != 0 && frequencyCount[i] == frequencyCount[i - 1]) {
-                return false;
+        for (int i : arr) {
+            int count = numberOfOccurrences[1000 + i];
+            numberOfOccurrences[1000 + i] = 0; 
+            if (count > 0) {
+                if (used[count]) return false; 
+                else used[count] = true; 
             }
         }
-
-        return true;
+        return true; 
     }
     
 }
