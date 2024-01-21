@@ -1,22 +1,22 @@
 class Solution {
     public int findPairs(int[] nums, int k) {
-        int result = 0;
-
-        HashMap <Integer,Integer> counter = new HashMap<>();
-        for (int n: nums) {
-            counter.put(n, counter.getOrDefault(n, 0)+1);
+        if (k < 0) {
+            return 0; // Invalid input for negative k.
         }
 
+        int pairCount = 0;
+        Map<Integer, Integer> numberCount = new HashMap<>();
 
-        for (Map.Entry <Integer, Integer> entry: counter.entrySet()) {
-            int x = entry.getKey();
-            int val = entry.getValue();
-            if (k > 0 && counter.containsKey(x + k)) {
-                result++;
-            } else if (k == 0 && val > 1) {
-                result++;
+        for (int num : nums) {
+            numberCount.put(num, numberCount.getOrDefault(num, 0) + 1);
+        }
+
+        for (int num : numberCount.keySet()) {
+            if ((k > 0 && numberCount.containsKey(num + k)) || (k == 0 && numberCount.get(num) > 1)) {
+                pairCount++;
             }
         }
-        return result;
+
+        return pairCount;
     }
 }
