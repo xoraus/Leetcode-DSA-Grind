@@ -25,9 +25,9 @@ class Solution {
             // Swapping adjacent nodes
             firstNode.next = secondNode.next;
             secondNode.next = firstNode;
-            current.next = secondNode;
             
-            current = current.next.next; // Move to the next pair of nodes.
+            current.next = secondNode;
+            current = firstNode; // Move to the next pair of nodes.
         }
 
         return dummy.next;
