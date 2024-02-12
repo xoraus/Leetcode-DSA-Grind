@@ -28,37 +28,28 @@ class GfG
 
 class Sol
 {
-    int countRev(String s) {
-       // Check if the string length is odd, which means it can't be balanced.
+    int countRev (String s){
         if (s.length() % 2 == 1) {
-            return -1;
+            return -1; // Cannot be balanced if the string length is odd.
         }
     
-        int openCount = 0;  // Count of open curly brackets '{'.
-        int closeCount = 0; // Count of close curly brackets '}'.
+        int openCount = 0;
+        int closeCount = 0;
     
-        // Iterate through each character in the string.
         for (char ch : s.toCharArray()) {
             if (ch == '{') {
-                openCount++; // Increment open count for '{'.
+                openCount++;
             } else {
-                // If there are open brackets to match, decrement open count.
                 if (openCount > 0) {
                     openCount--;
                 } else {
-                    closeCount++; // No matching open bracket, so increment close count.
+                    closeCount++;
                 }
             }
         }
     
-        int totalReversals = openCount + closeCount; // Total reversals needed.
-        
-        // If there are unmatched open brackets, add 1 to the total reversals.
-        if (openCount % 2 == 1) {
-            return totalReversals / 2 + 1;
-        }
+        int totalReversals = openCount + closeCount;
     
-        return totalReversals / 2;
-    } 
+        return totalReversals / 2 + (openCount % 2);
+    }
 }
-
