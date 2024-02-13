@@ -1,26 +1,12 @@
 class Solution {
     public String firstPalindrome(String[] words) {
-        for(String word: words){
-            if(isPalindrome(word)){
-                return word;
+        for (int index = 0; index < words.length; index++) {
+            StringBuilder wordReversed = new StringBuilder(words[index]);
+            wordReversed.reverse();
+            if (words[index].equals(wordReversed.toString())) {
+                return words[index];
             }
         }
-
         return "";
-    }
-    
-    public boolean isPalindrome(String str){
-        str = str.toLowerCase();
-        int left = 0, right = str.length() - 1;
-
-        while(left < right){
-            if(str.charAt(left) != str.charAt(right)){
-                return false;
-            }
-            left++;
-            right--;
-        }
-
-        return true;
     }
 }
