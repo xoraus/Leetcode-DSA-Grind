@@ -1,8 +1,5 @@
 class Solution {
     public int getCommon(int[] nums1, int[] nums2) {
-        Arrays.sort(nums1);
-        Arrays.sort(nums2);
-
         int idx1 = 0, idx2 = 0;
 
         while(idx1 < nums1.length && idx2 < nums2.length){
