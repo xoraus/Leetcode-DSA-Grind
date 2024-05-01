@@ -3,19 +3,15 @@ class Solution {
         boolean increasing = true;
         boolean decreasing = true;
 
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] > nums[i - 1]) {
-                decreasing = false;
-            } else if (nums[i] < nums[i - 1]) {
+        for (int idx = 0; idx < nums.length - 1; idx++) {
+            if (nums[idx] > nums[idx + 1]) {
                 increasing = false;
-            }
-            
-            // If both increasing and decreasing flags are false, it's not monotonic.
-            if (!increasing && !decreasing) {
-                return false;
+            } else if (nums[idx] < nums[idx + 1]) {
+                decreasing = false;
             }
         }
 
-        return true;
+        return increasing || decreasing;
     }
+    
 }
