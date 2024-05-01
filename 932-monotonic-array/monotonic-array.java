@@ -9,9 +9,12 @@ class Solution {
             } else if (nums[idx] < nums[idx + 1]) {
                 decreasing = false;
             }
+
+            if(!increasing && !decreasing){
+                return false;
+            }
         }
 
         return increasing || decreasing;
     }
-    
 }
