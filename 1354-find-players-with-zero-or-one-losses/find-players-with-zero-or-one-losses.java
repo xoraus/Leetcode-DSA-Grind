@@ -1,31 +1,32 @@
-import java.util.*;
-
 class Solution {
     public List<List<Integer>> findWinners(int[][] matches) {
-        Map<Integer, Integer> lost = new HashMap<>();
+        Map<Integer, Integer> lossCount = new HashMap<>();
 
         for (int[] match : matches) {
-            int lose = match[1];
-            lost.put(lose, lost.getOrDefault(lose, 0) + 1);
+            lossCount.put(match[1], lossCount.getOrDefault(match[1], 0) + 1);
         }
 
-        List<Integer> notLost = new ArrayList<>();
+        Set<Integer> allPlayers = new HashSet<>();
+        List<Integer> noLosses = new ArrayList<>();
         List<Integer> oneLoss = new ArrayList<>();
 
         for (int[] match : matches) {
-            int lose = match[1];
-            int win = match[0];
+            allPlayers.add(match[0]);
+            allPlayers.add(match[1]);
+        }
 
-            if (lost.get(lose) == 1) oneLoss.add(lose);
-            if (!lost.containsKey(win)) {
-                notLost.add(win);
-                lost.put(win, 2); // to avoid duplicates
+        for (int player : allPlayers) {
+            int losses = lossCount.getOrDefault(player, 0);
+            if (losses == 0) {
+                noLosses.add(player);
+            } else if (losses == 1) {
+                oneLoss.add(player);
             }
         }
 
-        Collections.sort(notLost);
+        Collections.sort(noLosses);
         Collections.sort(oneLoss);
 
-        return Arrays.asList(notLost, oneLoss);
-    } 
+        return Arrays.asList(noLosses, oneLoss);
+    }
 }
