@@ -8,6 +8,7 @@ class Solution {
             ans += numBottles;
             numBottles += remainder;
         }
+ 
         return ans;
     }
 }
